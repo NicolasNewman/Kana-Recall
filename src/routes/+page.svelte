@@ -7,8 +7,8 @@
 			<span tabindex="0" class="btn btn-primary w-full">Practice</span>
 			<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 			<ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
-				<li><a href="/practice/hiragana">Hiragana</a></li>
-				<li><a href="/practice/katakana">Katakana</a></li>
+				<li><a href="/practice/hira">Hiragana</a></li>
+				<li><a href="/practice/kata">Katakana</a></li>
 			</ul>
 		</div>
 		<a href="/stats" class="btn btn-primary mb-2 w-1/2">Stats</a>
