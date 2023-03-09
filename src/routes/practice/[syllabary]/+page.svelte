@@ -62,14 +62,12 @@
 		}
 	}
 
-	$: text = `
-		${correct.reduce(
-			(prev, curr, i) => `${prev}<span class="${curr ? 'correct' : 'wrong'}">${sentence[i]}</span>`,
-			''
-		)}
-		<span class="underline">${sentence[correct.length]}</span>
-		${sentence.slice(correct.length + 1, sentence.length).join('')}
-	`;
+	$: text = `${correct.reduce(
+		(prev, curr, i) => `${prev}<span class="${curr ? 'correct' : 'wrong'}">${sentence[i]}</span>`,
+		''
+	)}<span class="underline">${sentence[correct.length]}</span>${sentence
+		.slice(correct.length + 1, sentence.length)
+		.join('')}`;
 </script>
 
 <div id="container" class="p-8 bg-contain h-screen">
