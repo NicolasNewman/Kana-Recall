@@ -5,7 +5,9 @@
 	import { kanaCharacters } from '$lib/syllabary';
 	import type { PageData } from './$types';
 	import { convert, romanise } from 'jp-conversion';
+
 	export let data: PageData;
+
 	const { syllabary } = data;
 	const charset = kanaCharacters[syllabary];
 
