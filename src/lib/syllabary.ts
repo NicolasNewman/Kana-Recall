@@ -166,7 +166,7 @@ const kana: Library = {
 		},
 		y: {
 			ya: 'や',
-			yu: 'い',
+			yu: 'ゆ',
 			yo: 'よ'
 		},
 		w: {
@@ -174,7 +174,7 @@ const kana: Library = {
 			wo: 'を'
 		},
 		_n: {
-			n: 'ｎ'
+			n: 'ん'
 		},
 		g: {
 			ga: 'が',
@@ -192,8 +192,8 @@ const kana: Library = {
 		},
 		d: {
 			da: 'だ',
-			dzi: 'じ',
-			dzu: 'ず',
+			dzi: 'ぢ',
+			dzu: 'づ',
 			de: 'で',
 			do: 'ど'
 		},
@@ -279,7 +279,7 @@ const kana: Library = {
 			wo: 'ヲ'
 		},
 		_n: {
-			n: 'ｎ'
+			n: 'ん'
 		},
 		g: {
 			ga: 'ガ',
