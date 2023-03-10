@@ -297,9 +297,9 @@ const kana: Library = {
 			zo: 'ゾ'
 		},
 		d: {
-			da: 'サ',
-			dzi: 'ジ',
-			dzu: 'ズ',
+			da: 'ダ',
+			dzi: 'ヂ',
+			dzu: 'ヅ',
 			de: 'デ',
 			do: 'ド'
 		},
