@@ -2,39 +2,26 @@
 	import Kana from './Kana.svelte';
 
 	/** Kana characters belonging to this group */
-	export let characters: string[];
-	/** Subset of selected characters belonging to this group */
-	export let characterSet: Set<string> = new Set();
+	export let kanas: string[];
+	/** Subset of selected kana belonging to this group */
+	export let set: Set<string> = new Set();
 
-	let indeterminate = false;
-	let checked = false;
-
-	/** Computes the numbers of kana belonging to this group that appear in the set */
-	const getCharactersInSet = () =>
-		characters.reduce((prev, cur) => (characterSet.has(cur) ? prev + 1 : prev), 0);
+	/** Is the group's toggle fully toggled? */
+	let toggleFull = false;
+	/** Is the group's toggle fully partially? */
+	let togglePartial = false;
+	// update the state of the toggle bools if the size of the set changes
+	$: toggleFull = set.size === kanas.length;
+	$: togglePartial = set.size > 0 && set.size < kanas.length;
 
 	function onCheckboxClick(e: any) {
 		const checkbox = e.target as HTMLInputElement;
 
 		// update the set with the targeted kana
-		if (checkbox.checked) characterSet.add(checkbox.value);
-		else characterSet.delete(checkbox.value);
+		if (checkbox.checked) set.add(checkbox.value);
+		else set.delete(checkbox.value);
 
-		// update the toggle based on the number of kana selected
-		console.log([...characterSet]);
-
-		const charsInSet = getCharactersInSet();
-		if (charsInSet === characters.length) {
-			checked = true;
-			indeterminate = false;
-		} else if (charsInSet > 0) {
-			checked = false;
-			indeterminate = true;
-		} else {
-			checked = false;
-			indeterminate = false;
-		}
-		characterSet = characterSet;
+		set = set;
 	}
 
 	function onToggleClick(e: any) {
@@ -42,27 +29,25 @@
 
 		// add/remove all kana to/from the set based on the state of the toggle
 		if (toggle.checked) {
-			characters.forEach((character) => characterSet.add(character));
-			checked = true;
-			indeterminate = false;
+			kanas.forEach((kana) => set.add(kana));
 		} else {
-			characters.forEach((character) => characterSet.delete(character));
-			checked = false;
-			indeterminate = false;
+			kanas.forEach((kana) => set.delete(kana));
 		}
-		characterSet = characterSet;
+		set = set;
 	}
 </script>
 
-<div class="flex flex-col w-fit items-center">
+<div class="flex flex-col items-center">
 	<input
 		type="checkbox"
 		class="toggle toggle-accent"
-		bind:indeterminate
-		bind:checked
+		bind:checked={toggleFull}
+		bind:indeterminate={togglePartial}
 		on:click={onToggleClick}
 	/>
-	{#each characters as value}
-		<Kana {value} checked={characterSet.has(value)} on:click={onCheckboxClick} />
-	{/each}
+	<div class="flex flex-col w-fit items-center grow-[1] justify-between">
+		{#each kanas as kana}
+			<Kana {kana} checked={set.has(kana)} on:click={onCheckboxClick} />
+		{/each}
+	</div>
 </div>
