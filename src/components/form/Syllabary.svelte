@@ -1,9 +1,11 @@
 <script lang="ts">
 	import KanaGroup from './KanaGroup.svelte';
 	import library, { type Syllabary } from '$lib/syllabary';
+	import { union } from '$lib/set';
 
 	/** Controls wheather to display hiragana or katakana */
 	export let syllabary: Syllabary;
+	export let selected: string[] = [];
 
 	// ===== Primary Kana Variables =====
 
@@ -60,6 +62,8 @@
 		dakutenFull = dakutenCount === dakutenSize;
 		dakutenPartial = dakutenCount > 0 && dakutenCount < dakutenSize;
 	}
+
+	$: selected = Array.from(union(...primarySet, ...dakutenSet));
 
 	/**
 	 * Handles updating the group's state whenever a toggle is clicked
