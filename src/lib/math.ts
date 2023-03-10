@@ -1,5 +1,4 @@
 /**
- *
  * @param max - maximum number that can be generated
  * @returns random number between [0, max]
  */

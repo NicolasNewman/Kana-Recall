@@ -106,6 +106,7 @@ type Kana = {
 type Syllabary = 'hira' | 'kata';
 type Library = { [key in Syllabary]: Kana };
 
+/** Object containing all kana characters for both syllabarys, seperated by groups */
 const kana: Library = {
 	hira: {
 		vowel: {
@@ -319,16 +320,19 @@ const kana: Library = {
 	}
 };
 
+/** List of all hiragana characters */
 const hiragana = Object.values(kana.hira).reduce(
 	(prev, curr) => [...prev, ...Object.values(curr)],
 	[] as string[]
 );
 
+/** List of all katakana characters */
 const katakana = Object.values(kana.kata).reduce(
 	(prev, curr) => [...prev, ...Object.values(curr)],
 	[] as string[]
 );
 
+/** List of all kana for each syllabary */
 const kanaCharacters: { [key in Syllabary]: string[] } = {
 	hira: hiragana,
 	kata: katakana
