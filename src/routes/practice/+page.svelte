@@ -1,12 +1,19 @@
 <script lang="ts">
-	import { appWindow, LogicalSize } from '@tauri-apps/api/window';
+	import { setItem } from '$lib/sessionStorage';
 	import Syllabary from '../../components/form/Syllabary.svelte';
+	import { appWindow, LogicalSize } from '@tauri-apps/api/window';
+	import { routes } from '$lib/router';
 	appWindow.setSize(new LogicalSize(900, 556));
 
 	let active: 'hira' | 'kata' = 'hira';
 
 	let hiragana: string[] = [];
 	let katakana: string[] = [];
+
+	function onStartClicked() {
+		setItem('keyset', [...hiragana, ...katakana]);
+		window.location.href = routes.test('practice');
+	}
 </script>
 
 <div class="flex p-4">
@@ -23,7 +30,7 @@
 				>
 			</li>
 		</ul>
-		<button class="btn btn-primary">Start</button>
+		<button class="btn btn-primary" on:click={onStartClicked}>Start</button>
 	</div>
 	<div hidden={active === 'kata'}>
 		<Syllabary syllabary={'hira'} bind:selected={hiragana} />
