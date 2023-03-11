@@ -2,14 +2,15 @@
 	import { appWindow, LogicalSize } from '@tauri-apps/api/window';
 	appWindow.setSize(new LogicalSize(700, 374));
 	import { rand } from '$lib/math';
-	import { kanaCharacters } from '$lib/syllabary';
 	import type { PageData } from './$types';
-	import { convert, romanise } from 'jp-conversion';
+	import { convert } from 'jp-conversion';
+	import { getItem } from '$lib/sessionStorage';
 
 	export let data: PageData;
 
-	const { syllabary } = data;
-	const charset = kanaCharacters[syllabary];
+	const { mode } = data;
+	// const charset = kanaCharacters[syllabary];
+	const charset = getItem('keyset', true) ?? [];
 
 	let keyState = '';
 	let resetKeyState = false;
