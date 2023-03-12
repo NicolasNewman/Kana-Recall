@@ -3,12 +3,12 @@
 @tailwind utilities;
 
 @font-face {
-	font-family: 'Sawarabi Gothic';
-	src: url('/static/SawarabiGothic-Regular.ttf') format('ttf');
+	font-family: NotoSansMono;
+	src: url('/fonts/Noto\ Sans\ Mono\ CJK\ JP\ Regular.otf') format('opentype');
 }
 
-body {
-	font-family: 'Sawarabi Gothic';
+.NotoSansMono {
+	font-family: NotoSansMono;
 }
 
 @keyframes underlined {
