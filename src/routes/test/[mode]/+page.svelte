@@ -17,7 +17,7 @@
 
 	const sentence: string[] = [];
 	let correct: boolean[] = [];
-	for (let i = 0; i < 100; i++) {
+	for (let i = 0; i < 102; i++) {
 		sentence.push(charset[rand(charset.length)]);
 	}
 
@@ -76,9 +76,9 @@
 <div id="container" class="p-8 bg-contain h-screen">
 	<div
 		id="content"
-		class="rounded-lg border-2 border-gray-800 h-full bg-gray-900 text-4xl text-white"
+		class="rounded-lg border-2 border-gray-800 h-full bg-gray-900 text-[37px] leading-10 text-white"
 	>
-		<p>{@html text}</p>
+		<p class="NotoSansMono">{@html text}</p>
 	</div>
 </div>
 
