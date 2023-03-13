@@ -9,7 +9,7 @@
 	export let data: PageData;
 
 	const { mode } = data;
-	// const charset = kanaCharacters[syllabary];
+	// const charset = kanaCharacters['hira'];
 	const charset = getItem('keyset', true) ?? [];
 
 	let keyState = '';
@@ -57,6 +57,7 @@
 			correct = [...correct, isCorrect];
 			// indicate that the keyState needs to be reset on the next key press
 			resetKeyState = true;
+			keyState = '';
 		}
 
 		// if our state is greater than 2, reset the keyState as no more valid kana can be made
@@ -76,9 +77,14 @@
 <div id="container" class="p-8 bg-contain h-screen">
 	<div
 		id="content"
-		class="rounded-lg border-2 border-gray-800 h-full bg-gray-900 text-[37px] leading-10 text-white"
+		class="flex flex-col items-center justify-between rounded-lg border-2 p-1 pl-2 border-gray-800 h-full bg-gray-900 text-[36px] leading-10 text-white"
 	>
-		<p class="NotoSansMono">{@html text}</p>
+		<div class="NotoSansMono w-full">{@html text}</div>
+		<div class="mt-2 flex items-center h-full">
+			<div class="p-1 w-16 h-10 text-2xl text-center bg-slate-800 border border-gray-300 rounded">
+				{keyState}
+			</div>
+		</div>
 	</div>
 </div>
 
