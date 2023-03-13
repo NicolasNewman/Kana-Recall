@@ -35,6 +35,7 @@
 	"type": "module",
 	"dependencies": {
 		"@tauri-apps/api": "^1.2.0",
+		"@types/jp-conversion": "^0.0.0",
 		"daisyui": "^2.51.3",
 		"jp-conversion": "^0.0.7",
 		"svelte-preprocess-import-assets": "^0.2.6"

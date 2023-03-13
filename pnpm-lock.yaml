@@ -6,6 +6,7 @@ specifiers:
   '@sveltejs/kit': ^1.5.0
   '@tauri-apps/api': ^1.2.0
   '@tauri-apps/cli': ^1.2.3
+  '@types/jp-conversion': ^0.0.0
   '@typescript-eslint/eslint-plugin': ^5.45.0
   '@typescript-eslint/parser': ^5.45.0
   autoprefixer: ^10.4.13
@@ -27,6 +28,7 @@ specifiers:
 
 dependencies:
   '@tauri-apps/api': 1.2.0
+  '@types/jp-conversion': 0.0.0
   daisyui: 2.51.3_gbtt6ss3tbiz4yjtvdr6fbrj44
   jp-conversion: 0.0.7
   svelte-preprocess-import-assets: 0.2.6_svelte@3.55.1
@@ -500,6 +502,10 @@ packages:
   /@types/cookie/0.5.1:
     resolution: {integrity: sha512-COUnqfB2+ckwXXSFInsFdOAWQzCCx+a5hq2ruyj+Vjund94RJQd4LG2u9hnvJrTgunKAaax7ancBYlDrNYxA0g==}
     dev: true
+
+  /@types/jp-conversion/0.0.0:
+    resolution: {integrity: sha512-JUA6yPJCvR75oZQaFFnwGy9rcGX2Y1ccIkqDV/84CyLWhP1ZEg3oFTHznSjRI02PsF9kP+Ig/uuYY0Zm2oGz7w==}
+    dev: false
 
   /@types/json-schema/7.0.11:
     resolution: {integrity: sha512-wOuvG1SN4Us4rez+tylwwwCV1psiNVOkJeM3AUWUNWg/jDQY2+HE/444y5gc+jBmRqASOm2Oeh5c1axHobwRKQ==}
