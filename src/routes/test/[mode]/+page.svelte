@@ -23,6 +23,7 @@
 	}
 
 	function onKeyDown(e: KeyboardEvent) {
+		if (correct.length === sentence.length) return;
 		const key = e.key;
 		let regex = key.match(/[a-z]/);
 
@@ -70,7 +71,7 @@
 	$: text = `${correct.reduce(
 		(prev, curr, i) => `${prev}<span class="${curr ? 'correct' : 'wrong'}">${sentence[i]}</span>`,
 		''
-	)}<span class="underline">${sentence[correct.length]}</span>${sentence
+	)}<span class="underline">${sentence[correct.length] ?? ''}</span>${sentence
 		.slice(correct.length + 1, sentence.length)
 		.join('')}`;
 </script>
