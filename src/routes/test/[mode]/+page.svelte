@@ -25,6 +25,13 @@
 	function onKeyDown(e: KeyboardEvent) {
 		if (correct.length === sentence.length) return;
 		const key = e.key;
+		// handle deleting a character from the buffer
+		if (key === 'Backspace') {
+			if (keyState.length > 0) {
+				keyState = keyState.slice(0, keyState.length - 1);
+			}
+			return;
+		}
 		let regex = key.match(/[a-z]/);
 
 		// if the entered key is lowercase and we haven't reached the end of our sentence:
