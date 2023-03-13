@@ -5,12 +5,13 @@
 	import type { PageData } from './$types';
 	import { convert } from 'jp-conversion';
 	import { getItem } from '$lib/sessionStorage';
+	import { kanaCharacters } from '$lib/syllabary';
 
 	export let data: PageData;
 
 	const { mode } = data;
-	// const charset = kanaCharacters['hira'];
-	const charset = getItem('keyset', true) ?? [];
+	// TODO: better fallback handling
+	const charset = getItem('keyset', true) ?? kanaCharacters['hira'];
 
 	let keyState = '';
 	let resetKeyState = false;
