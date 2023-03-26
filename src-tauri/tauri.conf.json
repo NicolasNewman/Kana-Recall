@@ -16,7 +16,7 @@
 			"window": {
 				"all": false,
 				"center": false,
-				"close": false,
+				"close": true,
 				"create": false,
 				"hide": false,
 				"maximize": false,
@@ -41,9 +41,12 @@
 				"setSkipTaskbar": false,
 				"setTitle": false,
 				"show": false,
-				"startDragging": false,
+				"startDragging": true,
 				"unmaximize": false,
 				"unminimize": false
+			},
+			"globalShortcut": {
+				"all": true
 			}
 		},
 		"bundle": {
@@ -88,10 +91,11 @@
 		"windows": [
 			{
 				"fullscreen": false,
-				"height": 470,
+				"height": 500,
 				"resizable": false,
 				"title": "kana",
-				"width": 350
+				"width": 350,
+				"decorations": false
 			}
 		]
 	}
