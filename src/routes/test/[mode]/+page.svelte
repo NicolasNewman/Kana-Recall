@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { appWindow, LogicalSize } from '@tauri-apps/api/window';
-	appWindow.setSize(new LogicalSize(700, 374));
+	appWindow.setSize(new LogicalSize(700, 404));
 	import { rand } from '$lib/math';
 	import type { PageData } from './$types';
 	import { convert } from 'jp-conversion';

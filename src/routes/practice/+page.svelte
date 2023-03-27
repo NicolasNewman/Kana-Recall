@@ -3,7 +3,7 @@
 	import Syllabary from '../../components/form/Syllabary.svelte';
 	import { appWindow, LogicalSize } from '@tauri-apps/api/window';
 	import { routes } from '$lib/router';
-	appWindow.setSize(new LogicalSize(900, 556));
+	appWindow.setSize(new LogicalSize(900, 586));
 
 	let active: 'hira' | 'kata' = 'hira';
 

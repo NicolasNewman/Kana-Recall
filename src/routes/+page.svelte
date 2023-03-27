@@ -2,6 +2,8 @@
 	import { routes } from '$lib/router';
 	import { setItem } from '$lib/sessionStorage';
 	import { kanaCharacters, type Syllabary } from '$lib/syllabary';
+	import { appWindow, LogicalSize } from '@tauri-apps/api/window';
+	appWindow.setSize(new LogicalSize(350, 500));
 
 	function onTestClicked(mode: Syllabary) {
 		setItem('keyset', kanaCharacters[mode]);
@@ -9,7 +11,7 @@
 	}
 </script>
 
-<div id="container" class="absolute w-screen h-screen">
+<div id="container" class="absolute w-screen h-[calc(100vh - 30px)]">
 	<div class="flex flex-col items-center justify-center h-[390px] m-10">
 		<h1 class="text-3xl mb-2">Kana-Learn</h1>
 		<a href={routes.practice} class="btn btn-primary mb-2 w-1/2">Practice</a>
