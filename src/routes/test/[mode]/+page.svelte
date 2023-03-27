@@ -85,7 +85,7 @@
 		.join('')}`;
 </script>
 
-<div id="container" class="p-8 bg-contain h-screen">
+<div id="container" class="p-8 bg-contain h-[calc(100vh-30px)]">
 	<div
 		id="content"
 		class="flex flex-col items-center justify-between rounded-lg border-2 p-1 pl-2 border-gray-800 h-full bg-gray-900 text-[36px] leading-10 text-white"
