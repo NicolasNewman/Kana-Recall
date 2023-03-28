@@ -16,6 +16,7 @@
 		"@sveltejs/adapter-static": "1.0.0-next.50",
 		"@sveltejs/kit": "^1.5.0",
 		"@tauri-apps/cli": "^1.2.3",
+		"@types/jp-conversion": "^0.0.0",
 		"@typescript-eslint/eslint-plugin": "^5.45.0",
 		"@typescript-eslint/parser": "^5.45.0",
 		"autoprefixer": "^10.4.13",
@@ -35,8 +36,7 @@
 	"type": "module",
 	"dependencies": {
 		"@tauri-apps/api": "^1.2.0",
-		"@types/jp-conversion": "^0.0.0",
-		"custom-tauri-titlebar": "^0.2.1",
+		"custom-tauri-titlebar": "^0.2.2",
 		"daisyui": "^2.51.3",
 		"jp-conversion": "^0.0.7",
 		"svelte-preprocess-import-assets": "^0.2.6"
