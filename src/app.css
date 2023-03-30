@@ -14,6 +14,14 @@ div.titlebar {
 	position: relative;
 }
 
+#btn-close:hover {
+	background-color: #ff0000;
+}
+#btn-close:hover > img {
+	/* #fff */
+	filter: invert(99%) sepia(46%) saturate(0%) hue-rotate(207deg) brightness(115%) contrast(100%);
+}
+
 @font-face {
 	font-family: NotoSansMono;
 	src: url('/fonts/Noto\ Sans\ Mono\ CJK\ JP\ Regular.otf') format('opentype');
