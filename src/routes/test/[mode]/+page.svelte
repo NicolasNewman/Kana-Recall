@@ -46,6 +46,8 @@
 				// otherwise update the keyState with the new key
 				keyState = keyState + key;
 			}
+		} else {
+			return;
 		}
 
 		// attempt to convert the text in the keyState to a kana character
