@@ -11,8 +11,10 @@
 		}
 	});
 	titlebar.addIcon({ type: 'html', data: '学' });
-	titlebar.addButton('', { type: 'src', data: 'https://api.iconify.design/mdi:close.svg' }, (e) =>
-		appWindow.close()
+	titlebar.addButton(
+		'btn-close',
+		{ type: 'src', data: 'https://api.iconify.design/mdi:close.svg' },
+		(e) => appWindow.close()
 	);
 	titlebar.addTitle('Kana-Learn');
 </script>
