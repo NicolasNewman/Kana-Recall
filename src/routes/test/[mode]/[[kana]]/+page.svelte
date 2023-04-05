@@ -38,6 +38,12 @@
 		}
 
 		let regex = key.match(/[a-z]/);
+		if (correct.length === sentence.length - 1) {
+			if (mode === 'test') {
+				setItem('stats', stats);
+			}
+		}
+
 		// if the entered key is lowercase and we haven't reached the end of our sentence:
 		if (correct.length < sentence.length && regex && regex.input?.length === 1) {
 			// reset the keyState to the newly entered key if the reset flag is set
@@ -47,10 +53,6 @@
 			} else {
 				// otherwise update the keyState with the new key
 				keyState = keyState + key;
-			}
-		} else if (correct.length === sentence.length) {
-			if (mode === 'test') {
-				setItem('stats', stats);
 			}
 		} else {
 			return;
@@ -80,11 +82,8 @@
 
 			// if we are in testing mode, update the statistics
 			if (kanaId) {
-				// obtain the correct stats for that character
-				const stat =
-					stats[kanaId][
-						kana[kanaId === 'hira' ? 'hiragana' : 'katakana'] as keyof StoredStats[typeof kanaId]
-					];
+				// obtain the correct stats for the current character
+				const stat = stats[kanaId][sentence[i] as keyof StoredStats[typeof kanaId]];
 				stat.allTime[isCorrect ? 'correct' : 'incorrect']++;
 				// if we're storing more then the recent data can hold, remove the oldest entry
 				if (stat.recent.length >= settings.recentStatCount) {
