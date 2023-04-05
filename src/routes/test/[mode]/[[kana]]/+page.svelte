@@ -1,17 +1,19 @@
 <script lang="ts">
 	import { appWindow, LogicalSize } from '@tauri-apps/api/window';
-	appWindow.setSize(new LogicalSize(700, 404));
 	import { rand } from '$lib/math';
 	import type { PageData } from './$types';
 	import { convert } from 'jp-conversion';
-	import { getItem } from '$lib/sessionStorage';
-	import { kanaCharacters } from '$lib/syllabary';
+	import { getItem, setItem } from '$lib/sessionStorage';
+	import { kanaCharacters, type StoredStats } from '$lib/syllabary';
+	appWindow.setSize(new LogicalSize(700, 404));
 
 	export let data: PageData;
 
-	const { mode } = data;
+	const { mode, kana: kanaId } = data;
 	// TODO: better fallback handling
 	const charset = getItem('keyset', true) ?? kanaCharacters['hira'];
+	const stats = getItem('stats');
+	const settings = getItem('settings');
 
 	let keyState = '';
 	let resetKeyState = false;
@@ -46,6 +48,10 @@
 				// otherwise update the keyState with the new key
 				keyState = keyState + key;
 			}
+		} else if (correct.length === sentence.length) {
+			if (mode === 'test') {
+				setItem('stats', stats);
+			}
 		} else {
 			return;
 		}
@@ -71,6 +77,21 @@
 			// indicate that the keyState needs to be reset on the next key press
 			resetKeyState = true;
 			keyState = '';
+
+			// if we are in testing mode, update the statistics
+			if (kanaId) {
+				// obtain the correct stats for that character
+				const stat =
+					stats[kanaId][
+						kana[kanaId === 'hira' ? 'hiragana' : 'katakana'] as keyof StoredStats[typeof kanaId]
+					];
+				stat.allTime[isCorrect ? 'correct' : 'incorrect']++;
+				// if we're storing more then the recent data can hold, remove the oldest entry
+				if (stat.recent.length >= settings.recentStatCount) {
+					stat.recent.shift();
+				}
+				stat.recent.push(isCorrect ? 1 : 0);
+			}
 		}
 
 		// if our state is greater than 2, reset the keyState as no more valid kana can be made
