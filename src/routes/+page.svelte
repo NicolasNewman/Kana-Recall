@@ -7,7 +7,7 @@
 
 	function onTestClicked(mode: Syllabary) {
 		setItem('keyset', kanaCharacters[mode]);
-		window.location.href = routes.test('test');
+		window.location.href = routes.test('test', mode);
 	}
 </script>
 
