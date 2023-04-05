@@ -1,3 +1,5 @@
+import type { Syllabary } from './syllabary';
+
 /** Valid params for the /test/ route */
 export type TestParam = 'test' | 'practice';
 
@@ -5,5 +7,5 @@ export type TestParam = 'test' | 'practice';
 export const routes = {
 	stats: '/stats',
 	practice: '/practice',
-	test: (param: TestParam) => `/test/${param}`
+	test: (param: TestParam, library: Syllabary | '' = '') => `/test/${param}/${library}`
 };
