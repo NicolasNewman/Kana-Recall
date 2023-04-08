@@ -1,4 +1,5 @@
 import { DefaultStoredStats, type StoredStats } from './syllabary';
+import { BaseDirectory, exists, writeTextFile, readTextFile } from '@tauri-apps/api/fs';
 
 /** Mapping of keys to their corresponding data type */
 export interface SessionStorage {
@@ -41,4 +42,26 @@ export function getItem<T extends StorageKeys>(key: T, reset = false): SessionSt
 	if (reset) sessionStorage.removeItem(key);
 	if (data) return JSON.parse(data) as SessionStorage[T];
 	return SessionStorageDefaults[key];
+}
+
+export async function readFromDisk() {
+	if (await exists('data.conf', { dir: BaseDirectory.AppData })) {
+		const data = JSON.parse(
+			await readTextFile('data.conf', { dir: BaseDirectory.AppData })
+		) as Partial<SessionStorage>;
+		console.log(data);
+		Object.entries(data).forEach(([key, value]) => {
+			console.log(key);
+			console.log(value);
+			setItem(key as keyof SessionStorage, value);
+		});
+	}
+}
+
+export async function writeToDisk() {
+	const temp = {
+		settings: getItem('settings'),
+		stats: getItem('stats')
+	} as Partial<SessionStorage>;
+	await writeTextFile('data.conf', JSON.stringify(temp), { dir: BaseDirectory.AppData });
 }
