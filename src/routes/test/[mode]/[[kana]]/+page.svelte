@@ -1,10 +1,11 @@
 <script lang="ts">
 	import { appWindow, LogicalSize } from '@tauri-apps/api/window';
-	import { rand } from '$lib/math';
+	import { rand, sumArray } from '$lib/math';
 	import type { PageData } from './$types';
 	import { convert } from 'jp-conversion';
 	import { getItem, setItem } from '$lib/sessionStorage';
 	import { kanaCharacters, type StoredStats } from '$lib/syllabary';
+	import { routes } from '$lib/router';
 	appWindow.setSize(new LogicalSize(700, 404));
 
 	export let data: PageData;
@@ -17,6 +18,7 @@
 
 	let keyState = '';
 	let resetKeyState = false;
+	let text = '';
 
 	const sentence: string[] = [];
 	let correct: boolean[] = [];
@@ -38,6 +40,7 @@
 		}
 
 		let regex = key.match(/[a-z]/);
+		// if we are finished, save the data
 		if (correct.length === sentence.length - 1) {
 			if (mode === 'test') {
 				setItem('stats', stats);
@@ -99,12 +102,29 @@
 		}
 	}
 
-	$: text = `${correct.reduce(
-		(prev, curr, i) => `${prev}<span class="${curr ? 'correct' : 'wrong'}">${sentence[i]}</span>`,
-		''
-	)}<span class="underline">${sentence[correct.length] ?? ''}</span>${sentence
-		.slice(correct.length + 1, sentence.length)
-		.join('')}`;
+	$: {
+		if (correct.length === sentence.length) {
+			const nCorrect = sumArray(correct);
+			text = `
+			<div style="display: flex; flex-direction: column; align-items: center;">
+				<span style="border-bottom: 2px solid #fff; padding-bottom: 5px; width: 40%; text-align: center">Finished!</span>
+				<span>Correct: ${nCorrect}</span>
+				<span>Incorrect: ${sentence.length - nCorrect}</span>
+				<span>
+					Accuracy: ${((nCorrect / correct.length) * 100).toFixed(1)}%
+				</span>
+			</div>`;
+		} else {
+			const start = correct.reduce(
+				(prev, curr, i) =>
+					`${prev}<span class="${curr ? 'correct' : 'wrong'}">${sentence[i]}</span>`,
+				''
+			);
+			const curr = `<span class="underline">${sentence[correct.length] ?? ''}</span>`;
+			const end = sentence.slice(correct.length + 1, sentence.length).join('');
+			text = start + curr + end;
+		}
+	}
 </script>
 
 <div id="container" class="p-8 bg-contain h-[calc(100vh-30px)]">
@@ -114,9 +134,13 @@
 	>
 		<div class="NotoSansMono w-full">{@html text}</div>
 		<div class="mt-2 flex items-center h-full">
-			<div class="p-1 w-16 h-10 text-2xl text-center bg-slate-800 border border-gray-300 rounded">
-				{keyState}
-			</div>
+			{#if correct.length === sentence.length}
+				<a href={routes.home} class="btn btn-primary w-full mt-auto">Home</a>
+			{:else}
+				<div class="p-1 w-16 h-10 text-2xl text-center bg-slate-800 border border-gray-300 rounded">
+					{keyState}
+				</div>
+			{/if}
 		</div>
 	</div>
 </div>
