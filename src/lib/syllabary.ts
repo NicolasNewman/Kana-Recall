@@ -338,7 +338,7 @@ const kanaCharacters: { [key in Syllabary]: string[] } = {
 	kata: katakana
 };
 
-type Statistic = {
+export type Statistic = {
 	recent: number[];
 	allTime: {
 		correct: number;
