@@ -7,5 +7,6 @@ export type TestParam = 'test' | 'practice';
 export const routes = {
 	stats: '/stats',
 	practice: '/practice',
+	home: '/',
 	test: (param: TestParam, library: Syllabary | '' = '') => `/test/${param}/${library}`
 };
