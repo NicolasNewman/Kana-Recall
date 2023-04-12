@@ -7,12 +7,14 @@ import type { Statistic } from './syllabary';
 export const rand = (max: number) => Math.floor(Math.random() * max);
 
 export const accuracy = (stat: Statistic, mode: 'all' | 'recent' = 'all') => {
-	let acc = -2;
+	let acc = 0;
 	if (mode === 'recent') {
 		acc = stat.recent.reduce((prev, curr) => prev + curr, 0) / stat.recent.length;
 	} else {
 		acc = stat.allTime.correct / (stat.allTime.correct + stat.allTime.incorrect);
 	}
 
-	return isNaN(acc) ? -2 : acc;
+	return isNaN(acc) ? 0 : acc;
 };
+
+export const sumArray = (arr: number[]) => arr.reduce((prev, curr) => prev + curr, 0);
