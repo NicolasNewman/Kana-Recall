@@ -17,4 +17,8 @@ export const accuracy = (stat: Statistic, mode: 'all' | 'recent' = 'all') => {
 	return isNaN(acc) ? 0 : acc;
 };
 
-export const sumArray = (arr: number[]) => arr.reduce((prev, curr) => prev + curr, 0);
+export const sumArray = (arr: (number | boolean)[]) =>
+	arr.reduce((prev: number, curr) => {
+		if (typeof curr === 'boolean') return prev + (curr === true ? 1 : 0);
+		return prev + curr;
+	}, 0);
