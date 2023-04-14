@@ -11,7 +11,7 @@ specifiers:
   '@typescript-eslint/parser': ^5.45.0
   apexcharts: ^3.37.3
   autoprefixer: ^10.4.13
-  custom-tauri-titlebar: ^0.2.2
+  custom-tauri-titlebar: ^0.2.3
   daisyui: ^2.51.3
   eslint: ^8.28.0
   eslint-config-prettier: ^8.5.0
@@ -30,7 +30,7 @@ specifiers:
 dependencies:
   '@tauri-apps/api': 1.2.0
   apexcharts: 3.37.3
-  custom-tauri-titlebar: 0.2.2_@tauri-apps+api@1.2.0
+  custom-tauri-titlebar: 0.2.3_@tauri-apps+api@1.2.0
   daisyui: 2.51.5_j7yt3jd32cwenjqavrrga47yr4
   jp-conversion: 0.0.7
 
@@ -881,17 +881,17 @@ packages:
     engines: {node: '>=4'}
     hasBin: true
 
-  /custom-tauri-titlebar-bootstrap/0.2.2:
-    resolution: {integrity: sha512-75BI1x7iHzdBA0LOFvvl5vwJBMTpl/veUuIXo0ereQ+4ht+ntlNTvMGmGA8nf0Xv83v+2euV9S4j3SAdIp0ZqQ==}
+  /custom-tauri-titlebar-bootstrap/0.2.3:
+    resolution: {integrity: sha512-STQklzuCO5gIqmpgANWLG4PRxIVgott4s39n2w/9VQFyEU6ysF+lxi4XWkwGZMRtgtsPHWACNKv3tBwk9LK82g==}
     dev: false
 
-  /custom-tauri-titlebar/0.2.2_@tauri-apps+api@1.2.0:
-    resolution: {integrity: sha512-7R0LJy6Ebva84YH7DTdibWxneBwxp/L4zI0ti4j5L0zq8Cj8hNTpGZFqLLtlFxY8/sJ8ilzXX1ECGFK3SjXHlQ==}
+  /custom-tauri-titlebar/0.2.3_@tauri-apps+api@1.2.0:
+    resolution: {integrity: sha512-0ps3A6JpST87uM91lKu1ECac3GB6lbBHIc/Qu0/S74Je0Q5bfucXtcZN8WXXZ4vUAhoPKfTf19wD8ybPl28d/A==}
     peerDependencies:
       '@tauri-apps/api': ^1.0.0
     dependencies:
       '@tauri-apps/api': 1.2.0
-      custom-tauri-titlebar-bootstrap: 0.2.2
+      custom-tauri-titlebar-bootstrap: 0.2.3
     dev: false
 
   /daisyui/2.51.5_j7yt3jd32cwenjqavrrga47yr4:
