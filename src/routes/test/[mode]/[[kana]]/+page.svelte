@@ -6,6 +6,7 @@
 	import { getItem, setItem } from '$lib/sessionStorage';
 	import { kanaCharacters, type StoredStats } from '$lib/syllabary';
 	import { routes } from '$lib/router';
+	import Timer from '$lib/timer';
 	appWindow.setSize(new LogicalSize(700, 404));
 
 	export let data: PageData;
@@ -15,6 +16,7 @@
 	const charset = getItem('keyset', true) ?? kanaCharacters['hira'];
 	const stats = getItem('stats');
 	const settings = getItem('settings');
+	const timer = new Timer();
 
 	let keyState = '';
 	let resetKeyState = false;
@@ -94,10 +96,18 @@
 				const stat = stats[kanaId][sentence[i] as keyof StoredStats[typeof kanaId]];
 				stat.allTime[isCorrect ? 'correct' : 'incorrect']++;
 				// if we're storing more then the recent data can hold, remove the oldest entry
-				if (stat.recent.length >= settings.recentStatCount) {
-					stat.recent.shift();
+				if (stat.recent.accuracy.length >= settings.recentStatCount) {
+					stat.recent.accuracy.shift();
 				}
-				stat.recent.push(isCorrect ? 1 : 0);
+				stat.recent.accuracy.push(isCorrect ? 1 : 0);
+
+				if (isCorrect) {
+					if (stat.recent.recall.length >= settings.recentStatCount) {
+						stat.recent.recall.shift();
+					}
+					stat.recent.recall.push(timer.end());
+				}
+				timer.start();
 			}
 		}
 
