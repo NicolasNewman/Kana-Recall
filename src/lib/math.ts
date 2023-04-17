@@ -6,12 +6,14 @@ import type { Statistic } from './syllabary';
  */
 export const rand = (max: number) => Math.floor(Math.random() * max);
 
-export const accuracy = (stat: Statistic, mode: 'all' | 'recent' = 'all') => {
+export const accuracy = (stat: Statistic, mode: 'all' | 'accuracy' | 'recall' = 'all') => {
 	let acc = 0;
-	if (mode === 'recent') {
-		acc = stat.recent.reduce((prev, curr) => prev + curr, 0) / stat.recent.length;
-	} else {
+	if (mode === 'accuracy') {
+		acc = stat.recent.accuracy.reduce((prev, curr) => prev + curr, 0) / stat.recent.accuracy.length;
+	} else if (mode === 'all') {
 		acc = stat.allTime.correct / (stat.allTime.correct + stat.allTime.incorrect);
+	} else if (mode === 'recall') {
+		acc = stat.recent.recall.reduce((prev, curr) => prev + curr, 0) / stat.recent.recall.length;
 	}
 
 	return isNaN(acc) ? 0 : acc;
