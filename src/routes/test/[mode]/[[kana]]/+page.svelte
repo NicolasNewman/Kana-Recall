@@ -22,8 +22,13 @@
 
 	const sentence: string[] = [];
 	let correct: boolean[] = [];
+
+	let temp = [...charset];
 	for (let i = 0; i < 102; i++) {
-		sentence.push(charset[rand(charset.length)]);
+		if (temp.length === 0) {
+			temp = [...charset];
+		}
+		sentence.push(temp[rand(temp.length)]);
 	}
 
 	function onKeyDown(e: KeyboardEvent) {
