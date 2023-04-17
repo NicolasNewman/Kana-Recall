@@ -339,7 +339,10 @@ const kanaCharacters: { [key in Syllabary]: string[] } = {
 };
 
 export type Statistic = {
-	recent: number[];
+	recent: {
+		accuracy: number[];
+		recall: number[];
+	};
 	allTime: {
 		correct: number;
 		incorrect: number;
@@ -501,11 +504,11 @@ const DefaultStoredStats: StoredStats = (() => {
 		kata: {}
 	};
 	temp['hira'] = hiragana.reduce((prev, curr) => {
-		prev[curr] = { allTime: { correct: 0, incorrect: 0 }, recent: [] };
+		prev[curr] = { allTime: { correct: 0, incorrect: 0 }, recent: { accuracy: [], recall: [] } };
 		return prev;
 	}, {} as { [key: string]: Statistic });
 	temp['kata'] = katakana.reduce((prev, curr) => {
-		prev[curr] = { allTime: { correct: 0, incorrect: 0 }, recent: [] };
+		prev[curr] = { allTime: { correct: 0, incorrect: 0 }, recent: { accuracy: [], recall: [] } };
 		return prev;
 	}, {} as { [key: string]: Statistic });
 	return temp as StoredStats;
