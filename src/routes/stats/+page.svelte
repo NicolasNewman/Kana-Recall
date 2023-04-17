@@ -56,15 +56,15 @@
 		options={{
 			chart: {
 				type: 'bar',
-				// stacked: true,
-				// stackType: '100%',
 				background: 'rgba(0,0,0,0)',
-				// width: 1000,
-				height: 1000
+				height: 1250
 			},
 			plotOptions: {
 				bar: {
-					horizontal: true
+					horizontal: true,
+					dataLabels: {
+						position: '-200px'
+					}
 				}
 			},
 			dataLabels: {
@@ -73,13 +73,13 @@
 				},
 				// @ts-ignore
 				formatter: function (val, { dataPointIndex }) {
-					// console.log(opts);
 					const dat = data[dataPointIndex][1];
 					if (selectedMode === 'recent') {
 						return `${val}% (${sumArray(dat.recent)}/${dat.recent.length})`;
 					}
 					return `${val}% (${dat.allTime.correct}/${dat.allTime.correct + dat.allTime.incorrect})`;
-				}
+				},
+				textAnchor: 'start'
 			},
 			series: [
 				{
@@ -87,67 +87,25 @@
 					data: data.map(([key, value]) => ({ x: key, y: (accuracy(value) * 100).toFixed(2) })),
 					color: '#0f0'
 				}
-				// {
-				// 	name: 'Correct',
-				// 	data: data.map(([key, value]) => {
-				// 		return value.allTime.correct;
-				// 	}),
-				// 	color: '#0f0'
-				// },
-				// {
-				// 	name: 'Incorrect',
-				// 	data: data.map(([key, value]) => {
-				// 		return value.allTime.incorrect;
-				// 	}),
-				// 	color: '#f00'
-				// }
 			],
 			xaxis: {
-				// categories: labels,
 				max: 100
+			},
+			yaxis: {
+				labels: {
+					style: {
+						fontSize: '16'
+					},
+					offsetX: -4,
+					align: 'center',
+					offsetY: 3
+				}
 			},
 			theme: {
 				mode: 'dark'
 			}
 		}}
 	/>
-	<!-- <Chart
-		options={{
-			chart: {
-				type: 'bar',
-				stacked: true,
-				stackType: '100%',
-				background: 'rgba(0,0,0,0)',
-				width: 1000,
-				height: 550
-			},
-			dataLabels: {
-				style: {}
-			},
-			series: [
-				{
-					name: 'Correct',
-					data: data.map(([key, value]) => {
-						return value.allTime.correct;
-					}),
-					color: '#0f0'
-				},
-				{
-					name: 'Incorrect',
-					data: data.map(([key, value]) => {
-						return value.allTime.incorrect;
-					}),
-					color: '#f00'
-				}
-			],
-			xaxis: {
-				categories: labels
-			},
-			theme: {
-				mode: 'dark'
-			}
-		}}
-	/> -->
 </div>
 
 <!-- <style>
