@@ -30,7 +30,10 @@
 				>
 			</li>
 		</ul>
-		<button class="btn btn-primary" on:click={onStartClicked}>Start</button>
+		<div class="flex flex-col">
+			<a href={routes.home} class="btn btn-secondary mb-4">Back</a>
+			<button class="btn btn-primary" on:click={onStartClicked}>Start</button>
+		</div>
 	</div>
 	<div hidden={active === 'kata'}>
 		<Syllabary syllabary={'hira'} bind:selected={hiragana} />
