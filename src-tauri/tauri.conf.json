@@ -71,7 +71,7 @@
 				"icons/icon.icns",
 				"icons/icon.ico"
 			],
-			"identifier": "com.tauri.dev",
+			"identifier": "com.nicolasnewman.kanalearn",
 			"longDescription": "",
 			"macOS": {
 				"entitlements": null,
