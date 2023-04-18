@@ -14,7 +14,7 @@
 
 <div id="container" class="absolute w-screen h-[calc(100vh-30px)]">
 	<div class="flex flex-col items-center justify-center h-[390px] m-10">
-		<h1 class="text-3xl mb-2">Kana-Learn</h1>
+		<h1 class="text-3xl mb-2 text-purple-800">Kana-Learn</h1>
 		<a href={routes.practice} class="btn btn-primary mb-2 w-1/2">Practice</a>
 		<div class="dropdown dropdown-end mb-2 w-1/2">
 			<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
