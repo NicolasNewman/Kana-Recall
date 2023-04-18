@@ -37,7 +37,7 @@
 	"dependencies": {
 		"@tauri-apps/api": "^1.2.0",
 		"apexcharts": "^3.37.3",
-		"custom-tauri-titlebar": "^0.2.3",
+		"custom-tauri-titlebar": "^0.2.7",
 		"daisyui": "^2.51.3",
 		"jp-conversion": "^0.0.7"
 	}
