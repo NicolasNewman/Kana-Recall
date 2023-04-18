@@ -10,6 +10,8 @@ export interface SessionStorage {
 	};
 }
 
+const sessionStorageKeys: (keyof SessionStorage)[] = ['keyset', 'settings', 'stats'];
+
 /** Default values for each key in the sessionStorage */
 const SessionStorageDefaults: { [key in keyof SessionStorage]: SessionStorage[key] } = {
 	keyset: null,
@@ -44,6 +46,12 @@ export function getItem<T extends StorageKeys>(key: T, reset = false): SessionSt
 	return SessionStorageDefaults[key];
 }
 
+export function resetSession() {
+	for (const key of sessionStorageKeys) {
+		setItem(key, SessionStorageDefaults[key]);
+	}
+}
+
 export async function readFromDisk() {
 	if (await exists('data.conf', { dir: BaseDirectory.AppData })) {
 		const data = JSON.parse(
@@ -51,8 +59,6 @@ export async function readFromDisk() {
 		) as Partial<SessionStorage>;
 		console.log(data);
 		Object.entries(data).forEach(([key, value]) => {
-			console.log(key);
-			console.log(value);
 			setItem(key as keyof SessionStorage, value);
 		});
 	}
