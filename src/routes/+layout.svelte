@@ -2,14 +2,15 @@
 	import '../app.css';
 	import Titlebar from 'custom-tauri-titlebar';
 	import { appWindow } from '@tauri-apps/api/window';
-	import { getItem, readFromDisk, writeToDisk } from '$lib/sessionStorage';
+	import { readFromDisk, resetSession, writeToDisk } from '$lib/sessionStorage';
+	import { routes } from '$lib/router';
 
 	const titlebar = new Titlebar({
 		theme: {
 			bgPrimary: '#3e3e3e',
-			bgSecondary: '',
+			bgSecondary: '#2e2e2e',
 			fontPrimary: '#ffffff',
-			fontSecondary: ''
+			fontSecondary: '#ffffff'
 		}
 	});
 	titlebar.addIcon({ type: 'html', data: '学' });
@@ -22,14 +23,52 @@
 		}
 	);
 	titlebar.addTitle('Kana-Learn');
+	titlebar.addMenu({
+		label: 'File',
+		items: [
+			{
+				type: 'item',
+				label: 'Settings',
+				action: () => {
+					window.location.href = routes.settings;
+				}
+				// shortcut: { key: 's', ctrl: true } TODO doesn't work
+			},
+			{
+				type: 'item',
+				label: 'Reset',
+				action: () => {
+					window.location.href = '#modal';
+				}
+			}
+		]
+	});
 
 	const promise = readFromDisk();
+
+	const resetData = () => {
+		resetSession();
+		window.location.href = '#';
+	};
 </script>
 
 {#await promise}
 	<p>Loading...</p>
 {:then}
 	<slot />
+
+	<div class="modal" id="modal">
+		<div class="modal-box">
+			<h3 class="font-bold text-lg">Are you sure?</h3>
+			<p class="py-4">
+				Clicking confirm will reset <strong>all</strong> data to the default state.
+			</p>
+			<div class="modal-action">
+				<a href="#" class="btn">Cancel</a>
+				<button on:click|preventDefault={resetData} class="btn btn-error">Confirm</button>
+			</div>
+		</div>
+	</div>
 {:catch err}
 	<p>Error loading page {err}</p>
 {/await}
