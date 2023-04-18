@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { routes } from '$lib/router';
-	import { setItem } from '$lib/sessionStorage';
+	import { getItem, setItem } from '$lib/sessionStorage';
 	import { kanaCharacters, type Syllabary } from '$lib/syllabary';
 	import { appWindow, LogicalSize } from '@tauri-apps/api/window';
+	import { onMount } from 'svelte';
 	appWindow.setSize(new LogicalSize(350, 500));
 
 	function onTestClicked(mode: Syllabary) {
@@ -24,7 +25,7 @@
 				<li><button on:click={(e) => onTestClicked('kata')}>Katakana</button></li>
 			</ul>
 		</div>
-		<a href={routes.stats} class="btn btn-primary mb-2 w-1/2">Stats</a>
+		<a href={routes.stats} class="btn btn-secondary mb-2 w-1/2">Stats</a>
 	</div>
 </div>
 
