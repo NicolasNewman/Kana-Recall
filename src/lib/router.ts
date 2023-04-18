@@ -8,5 +8,6 @@ export const routes = {
 	stats: '/stats',
 	practice: '/practice',
 	home: '/',
+	settings: '/settings',
 	test: (param: TestParam, library: Syllabary | '' = '') => `/test/${param}/${library}`
 };
