@@ -1,5 +1,5 @@
 import { DefaultStoredStats, type StoredStats } from './syllabary';
-import { BaseDirectory, exists, writeTextFile, readTextFile } from '@tauri-apps/api/fs';
+import { BaseDirectory, exists, writeTextFile, readTextFile, createDir } from '@tauri-apps/api/fs';
 
 /** Mapping of keys to their corresponding data type */
 export interface SessionStorage {
@@ -69,5 +69,9 @@ export async function writeToDisk() {
 		settings: getItem('settings'),
 		stats: getItem('stats')
 	} as Partial<SessionStorage>;
+	// BaseDir not found
+	if (!(await exists('', { dir: BaseDirectory.AppData }))) {
+		await createDir('', { dir: BaseDirectory.AppData, recursive: true });
+	}
 	await writeTextFile('data.conf', JSON.stringify(temp), { dir: BaseDirectory.AppData });
 }
