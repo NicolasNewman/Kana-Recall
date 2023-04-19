@@ -23,8 +23,8 @@ fn main() {
           let settings = webview.controller().CoreWebView2().unwrap().Settings().unwrap();
           let settings = settings.cast::<ICoreWebView2Settings6>().unwrap();
           settings.SetIsSwipeNavigationEnabled(false).unwrap();
-          settings.SetIsZoomControlEnabled(false).upwrap();
-          settings.SetIsPinchZoomEnabled(false).upwrap()
+          settings.SetIsZoomControlEnabled(false).unwrap();
+          settings.SetIsPinchZoomEnabled(false).unwrap()
         }
 
         #[cfg(target_os = "macos")]
