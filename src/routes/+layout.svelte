@@ -22,7 +22,7 @@
 			appWindow.close();
 		}
 	);
-	titlebar.addTitle('Kana-Learn');
+	titlebar.addTitle('Kana-Recall');
 	titlebar.addMenu({
 		label: 'File',
 		items: [

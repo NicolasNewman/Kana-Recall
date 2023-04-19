@@ -7,7 +7,7 @@
 		"distDir": "../build"
 	},
 	"package": {
-		"productName": "kana",
+		"productName": "Kana-Recall",
 		"version": "0.1.0"
 	},
 	"tauri": {
@@ -71,7 +71,7 @@
 				"icons/icon.icns",
 				"icons/icon.ico"
 			],
-			"identifier": "com.nicolasnewman.kanalearn",
+			"identifier": "com.nicolasnewman.kanarecall",
 			"longDescription": "",
 			"macOS": {
 				"entitlements": null,
@@ -100,7 +100,7 @@
 				"fullscreen": false,
 				"height": 500,
 				"resizable": false,
-				"title": "kana",
+				"title": "Kana-Recall",
 				"width": 350,
 				"decorations": false
 			}
