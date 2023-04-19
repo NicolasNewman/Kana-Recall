@@ -21,9 +21,10 @@ fn main() {
           use webview2_com::Microsoft::Web::WebView2::Win32::ICoreWebView2Settings6;
           use windows::core::Interface;
           let settings = webview.controller().CoreWebView2().unwrap().Settings().unwrap();
-          settings.cast::<ICoreWebView2Settings6>().unwrap();
+          let settings = settings.cast::<ICoreWebView2Settings6>().unwrap();
           settings.SetIsSwipeNavigationEnabled(false).unwrap();
-          settings.SetIsZoomControlEnabled(false).upwrap()
+          settings.SetIsZoomControlEnabled(false).upwrap();
+          settings.SetIsPinchZoomEnabled(false).upwrap()
         }
 
         #[cfg(target_os = "macos")]
