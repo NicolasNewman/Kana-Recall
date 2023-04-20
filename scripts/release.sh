@@ -4,6 +4,7 @@ case $1 in
         git fetch origin master:master
         git merge master
         git push origin develop:master
+        git pull origin master
   ;;
 
   *)
