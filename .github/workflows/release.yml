@@ -59,7 +59,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tagName: __VERSION__ # This only works if your workflow triggers on new tags.
+          tagName: __VERSION__
           releaseName: 'Kana-Recall v__VERSION__' # tauri-action replaces \_\_VERSION\_\_ with the app version.
           releaseBody: '${{steps.github_release.outputs.changelog}}'
           # releaseDraft: true
