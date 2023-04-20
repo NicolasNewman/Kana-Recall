@@ -25,7 +25,8 @@ jobs:
               repo: context.repo.repo,
               tag_name: `${process.env.PACKAGE_VERSION}`,
               name: `Kana-Recall v${process.env.PACKAGE_VERSION}`,
-              draft: true,
+              body: 'Please wait for the release to be built.',
+              draft: false,
               prerelease: true
             })
             return data.id
