@@ -7,6 +7,7 @@ export interface SessionStorage {
 	stats: StoredStats;
 	settings: {
 		recentStatCount: number;
+		maxRecallDuration: number;
 	};
 }
 
@@ -17,7 +18,8 @@ const SessionStorageDefaults: { [key in keyof SessionStorage]: SessionStorage[ke
 	keyset: null,
 	stats: DefaultStoredStats,
 	settings: {
-		recentStatCount: 30
+		recentStatCount: 30,
+		maxRecallDuration: 5
 	}
 };
 

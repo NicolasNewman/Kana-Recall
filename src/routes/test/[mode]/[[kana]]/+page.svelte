@@ -24,7 +24,6 @@
 
 	const sentence: string[] = [];
 	let correct: boolean[] = [];
-	console.log(mode);
 	let temp = [...charset];
 	if (mode === 'test' || mode === 'practice') {
 		for (let i = 0; i < 102; i++) {
@@ -54,9 +53,7 @@
 			console.log(`${kana}: ${avg}`);
 			return Math.tanh(0.25 * avg);
 		});
-		console.log(weights);
 		const weightSum = sumArray(weights);
-		console.log(`Weight Sum: ${weightSum}`);
 		for (let i = 0; i < 102; i++) {
 			const w = Math.random() * weightSum;
 			let acc = 0;
@@ -143,7 +140,11 @@
 					if (stat.recent.recall.length >= settings.recentStatCount) {
 						stat.recent.recall.shift();
 					}
-					stat.recent.recall.push(timer.end());
+					let t = timer.end();
+					if (t > settings.maxRecallDuration) {
+						t = settings.maxRecallDuration;
+					}
+					stat.recent.recall.push(t);
 				}
 				timer.start();
 			}

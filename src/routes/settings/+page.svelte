@@ -16,10 +16,6 @@
 		}
 		setItem('settings', data);
 	}
-
-	function reset() {
-		resetSession();
-	}
 </script>
 
 <form
@@ -37,6 +33,20 @@
 				placeholder="Type here"
 				class="input input-bordered w-full max-w-xs"
 				value={settings.recentStatCount}
+			/>
+		</div>
+	</div>
+	<div>
+		<div class="form-control w-full max-w-xs">
+			<label class="label" for="recentStatCount">
+				<span class="label-text text-base">Maximum amount of time for recalling a kana</span>
+			</label>
+			<input
+				type="number"
+				name="maxRecallDuration"
+				placeholder="Type here"
+				class="input input-bordered w-full max-w-xs"
+				value={settings.maxRecallDuration}
 			/>
 		</div>
 	</div>
