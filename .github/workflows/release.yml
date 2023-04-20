@@ -5,36 +5,6 @@ on:
       - master
 
 jobs:
-  draft-release:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: setup node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16
-      - name: get version
-        run: echo "PACKAGE_VERSION=$(node -p "require('./package.json').version")" >> $GITHUB_ENV
-      - name: create release
-        id: create-release
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const { data } = await github.rest.repos.createRelease({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              tag_name: `${process.env.PACKAGE_VERSION}`,
-              name: `Kana-Recall v${process.env.PACKAGE_VERSION}`,
-              body: 'Please wait for the release to be built.',
-              draft: false,
-              prerelease: true
-            })
-            return data.id
-      - name: Build Changelog
-        id: github_release
-        uses: mikepenz/release-changelog-builder-action@v3
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   build-tauri:
     permissions:
       contents: write
@@ -43,7 +13,8 @@ jobs:
       matrix:
         platform: [macos-latest, ubuntu-20.04, windows-latest]
     runs-on: ${{ matrix.platform }}
-
+    outputs:
+      RELEASE_ID: ${{steps.build-tauri.outputs.releaseId}}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -76,29 +47,36 @@ jobs:
         run: pnpm install # Change this to npm, yarn or pnpm.
 
       - name: Build the app
+        id: build-tauri
         uses: tauri-apps/tauri-action@v0
-
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          releaseId: ${{ needs.create-release.outputs.release_id }}
-  public-release:
+          tagName: __VERSION__
+          releaseName: 'Kana-Recall __VERSION__' # tauri-action replaces \_\_VERSION\_\_ with the app version.
+          releaseBody: 'Generating changelog...'
+          # releaseDraft: true
+          prerelease: true
+  update-release:
     permissions:
       contents: write
     runs-on: ubuntu-20.04
-    needs: [draft-release, build-tauri]
+    needs: [build-tauri]
     steps:
-      - name: publish release
-        id: publish-release
-        uses: actions/github-script@v6
+      - name: Build Changelog
+        id: github_release
+        uses: mikepenz/release-changelog-builder-action@v3
         env:
-          release_id: ${{ needs.create-release.outputs.release_id }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: update release
+        id: update-release
+        uses: actions/github-script@v6
         with:
           script: |
             github.rest.repos.updateRelease({
               repo: context.repo.repo,
               body: `${{steps.github_release.outputs.changelog}}`,
-              release_id: process.env.release_id,
+              release_id: `${{needs.build-tauri.outputs.RELEASE_ID}}`,
               draft: false,
               prerelease: true
             })
