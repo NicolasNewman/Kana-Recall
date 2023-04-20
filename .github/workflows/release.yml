@@ -58,8 +58,9 @@ jobs:
           # releaseDraft: true
           prerelease: true
   update-release:
-    # permissions:
-    #   contents: write
+    permissions:
+      contents: write
+      pull-requests: read
     runs-on: ubuntu-20.04
     needs: [build-tauri]
     steps:
