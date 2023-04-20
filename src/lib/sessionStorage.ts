@@ -7,6 +7,7 @@ export interface SessionStorage {
 	stats: StoredStats;
 	settings: {
 		recentStatCount: number;
+		maxRecallDuration: number;
 	};
 }
 
@@ -17,7 +18,8 @@ const SessionStorageDefaults: { [key in keyof SessionStorage]: SessionStorage[ke
 	keyset: null,
 	stats: DefaultStoredStats,
 	settings: {
-		recentStatCount: 30
+		recentStatCount: 30,
+		maxRecallDuration: 5
 	}
 };
 
@@ -57,7 +59,6 @@ export async function readFromDisk() {
 		const data = JSON.parse(
 			await readTextFile('data.conf', { dir: BaseDirectory.AppData })
 		) as Partial<SessionStorage>;
-		console.log(data);
 		Object.entries(data).forEach(([key, value]) => {
 			setItem(key as keyof SessionStorage, value);
 		});

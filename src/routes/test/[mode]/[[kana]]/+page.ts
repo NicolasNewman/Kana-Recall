@@ -3,10 +3,8 @@ import type { Syllabary } from '$lib/syllabary';
 import type { PageLoad } from './$types';
 
 export const load: PageLoad = async ({ params }) => {
-	let mode = params.mode;
-	if (!(mode === 'test' || mode === 'practice')) {
-		mode = 'test';
-	}
+	const mode = params.mode;
+	// TODO fallback for invalid modes
 	return {
 		mode: mode as TestParam,
 		kana: params.kana as Syllabary | undefined

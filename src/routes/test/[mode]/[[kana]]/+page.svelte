@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { appWindow, LogicalSize } from '@tauri-apps/api/window';
-	import { rand, sumArray } from '$lib/math';
+	import { accuracy, rand, sumArray } from '$lib/math';
 	import type { PageData } from './$types';
 	import { convert } from 'jp-conversion';
 	import { getItem, setItem } from '$lib/sessionStorage';
@@ -24,13 +24,48 @@
 
 	const sentence: string[] = [];
 	let correct: boolean[] = [];
-
 	let temp = [...charset];
-	for (let i = 0; i < 102; i++) {
-		if (temp.length === 0) {
-			temp = [...charset];
+	if (mode === 'test' || mode === 'practice') {
+		for (let i = 0; i < 102; i++) {
+			if (temp.length === 0) {
+				temp = [...charset];
+			}
+			const n = rand(temp.length);
+			sentence.push(temp[n]);
+			temp.splice(n, 1);
 		}
-		sentence.push(temp[rand(temp.length)]);
+	} else if ((mode === 'recall' || mode === 'accuracy') && kanaId) {
+		/*
+            The weights for time mode are calculated by taking the average time for a kana
+            and putting it through Sigmoid function. The calculates weights are stored in a
+            list along with another var for the sum. Once the weights and sums have been
+            computed, perform the following for each character needed in the sentence:
+            1) Generate a random continuous number (w) in the range [0, weightedSum]
+            2) Loop through the weights and keep track with an accumulator of the weights and an iterator
+            3) If the random number (w) is greater then the accumulator and less then the
+            accumulator + current weight from the list then return the iterator
+            4) Retrive the kana at the selected iterator from the flattened list
+            (the flattened list and weights list index's match up)
+        */
+		const weights = Object.entries(stats[kanaId]).map(([kana, stat]) => {
+			let avg = accuracy(stat, mode);
+			if (mode === 'accuracy') avg = 1 - avg;
+			console.log(`${kana}: ${avg}`);
+			return Math.tanh(0.25 * avg);
+		});
+		const weightSum = sumArray(weights);
+		for (let i = 0; i < 102; i++) {
+			const w = Math.random() * weightSum;
+			let acc = 0;
+			let j = 0;
+			for (j = 0; j < weights.length; j++) {
+				if (acc <= w && w <= acc + weights[j]) {
+					break;
+				}
+				acc += weights[j];
+			}
+			sentence.push(temp[j]);
+		}
 	}
 
 	function onKeyDown(e: KeyboardEvent) {
@@ -105,7 +140,11 @@
 					if (stat.recent.recall.length >= settings.recentStatCount) {
 						stat.recent.recall.shift();
 					}
-					stat.recent.recall.push(timer.end());
+					let t = timer.end();
+					if (t > settings.maxRecallDuration) {
+						t = settings.maxRecallDuration;
+					}
+					stat.recent.recall.push(t);
 				}
 				timer.start();
 			}

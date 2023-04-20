@@ -4,6 +4,7 @@
 	import { appWindow } from '@tauri-apps/api/window';
 	import { readFromDisk, resetSession, writeToDisk } from '$lib/sessionStorage';
 	import { routes } from '$lib/router';
+	import { goto } from '$app/navigation';
 
 	const titlebar = new Titlebar({
 		theme: {
@@ -30,7 +31,7 @@
 				type: 'item',
 				label: 'Settings',
 				action: () => {
-					window.location.href = routes.settings;
+					goto(routes.settings);
 				}
 				// shortcut: { key: 's', ctrl: true } TODO doesn't work
 			},
