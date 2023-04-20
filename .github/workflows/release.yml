@@ -101,7 +101,7 @@ jobs:
             github.rest.repos.updateRelease({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: steps.github_release.outputs.changelog,
+              body: `${steps.github_release.outputs.changelog}`,
               release_id: process.env.release_id,
               draft: false,
               prerelease: true
