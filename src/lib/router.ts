@@ -1,7 +1,7 @@
 import type { Syllabary } from './syllabary';
 
 /** Valid params for the /test/ route */
-export type TestParam = 'test' | 'practice';
+export type TestParam = 'test' | 'practice' | 'recall' | 'accuracy';
 
 /** Object mapping to valid routes with typed generators */
 export const routes = {
