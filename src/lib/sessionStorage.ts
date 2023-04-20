@@ -59,7 +59,6 @@ export async function readFromDisk() {
 		const data = JSON.parse(
 			await readTextFile('data.conf', { dir: BaseDirectory.AppData })
 		) as Partial<SessionStorage>;
-		console.log(data);
 		Object.entries(data).forEach(([key, value]) => {
 			setItem(key as keyof SessionStorage, value);
 		});
