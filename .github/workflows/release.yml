@@ -25,7 +25,8 @@ jobs:
               repo: context.repo.repo,
               tag_name: `${process.env.PACKAGE_VERSION}`,
               name: `Kana-Recall v${process.env.PACKAGE_VERSION}`,
-              draft: true,
+              body: 'Please wait for the release to be built.',
+              draft: false,
               prerelease: true
             })
             return data.id
@@ -81,11 +82,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           releaseId: ${{ needs.create-release.outputs.release_id }}
-          # tagName: __VERSION__
-          # releaseName: 'Kana-Recall v__VERSION__' # tauri-action replaces \_\_VERSION\_\_ with the app version.
-          # releaseBody: '${{steps.github_release.outputs.changelog}}'
-          # # releaseDraft: true
-          # prerelease: true
   public-release:
     permissions:
       contents: write
@@ -100,9 +96,8 @@ jobs:
         with:
           script: |
             github.rest.repos.updateRelease({
-              owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `${steps.github_release.outputs.changelog}`,
+              body: `${{steps.github_release.outputs.changelog}}`,
               release_id: process.env.release_id,
               draft: false,
               prerelease: true
