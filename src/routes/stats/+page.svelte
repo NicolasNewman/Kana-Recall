@@ -105,7 +105,7 @@
 				formatter: function (val, { dataPointIndex }) {
 					const dat = data[dataPointIndex][1];
 					if (selectedMode === 'accuracy') {
-						return `${val}% (${sumArray(dat.recent.accuracy)}/${dat.recent.accuracy})`;
+						return `${val}% (${sumArray(dat.recent.accuracy)}/${dat.recent.accuracy.length})`;
 					} else if (selectedMode === 'recall') {
 						return `${val}s`;
 					}
