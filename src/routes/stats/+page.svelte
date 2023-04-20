@@ -2,7 +2,7 @@
 	import { getItem } from '$lib/sessionStorage';
 	import { LogicalSize, appWindow } from '@tauri-apps/api/window';
 	import { accuracy, sumArray } from '$lib/math';
-	import type { Statistic, Syllabary } from '$lib/syllabary';
+	import type { StoredStats, Syllabary } from '$lib/syllabary';
 	import Radio from '../../components/form/Radio.svelte';
 	import { routes } from '$lib/router';
 	import Chart from '../../components/Chart.svelte';
@@ -20,10 +20,31 @@
 		return selectedMode === 'recall' ? data.reverse() : data;
 	};
 
+	const buildTooltip = (labels: string[], index: number) => {
+		const key = labels[index] as keyof StoredStats[typeof selectedKana];
+		const stat = stats[selectedKana][key];
+		const allTime = accuracy(stat, 'all');
+		return `<div class="apex-tooltip">
+			<div class="header">${labels[index]}</div>
+			<div class="body">
+				<p>All time: <strong class="${selectedMode === 'all' ? 'target' : ''}">${
+			accuracy(stat, 'all') * 100
+		}%</strong></p>	
+				<p>Accuracy (past ${settings.recentStatCount}): <strong class="${
+			selectedMode === 'accuracy' ? 'target' : ''
+		}">${accuracy(stat, 'accuracy') * 100}%</strong></p>	
+				<p>Recall (past ${settings.recentStatCount}): <strong class="${
+			selectedMode === 'recall' ? 'target' : ''
+		}">${accuracy(stat, 'recall').toFixed(2)}s</strong></p>					
+			</div>
+		</div>`;
+	};
+
 	type Mode = 'accuracy' | 'all' | 'recall';
 	const kana: Syllabary[] = ['hira', 'kata'];
 	const modes: Mode[] = ['accuracy', 'all', 'recall'];
 	const stats = getItem('stats');
+	const settings = getItem('settings');
 	let selectedKana: Syllabary = 'hira';
 	let selectedMode: 'all' | 'accuracy' | 'recall' = 'all';
 	const modeName: { [key in Mode]: string } = {
@@ -72,6 +93,9 @@
 						position: '-200px'
 					}
 				}
+			},
+			tooltip: {
+				custom: ({ w, series, dataPointIndex }) => buildTooltip(w.globals.labels, dataPointIndex)
 			},
 			dataLabels: {
 				style: {
@@ -122,10 +146,25 @@
 	/>
 </div>
 
-<!-- <style>
-	:global(.apexcharts-data-labels) {
+<style>
+	/* :global(.apexcharts-data-labels) {
 		transform-box: fill-box;
 		transform-origin: center;
 		transform: rotate(-90deg);
+	} */
+	:global(.apex-tooltip) {
 	}
-</style> -->
+	:global(.apex-tooltip .header) {
+		padding: 2px 4px;
+		width: 100%;
+		background: rgba(0, 0, 0, 0.6);
+		font-size: 16px;
+	}
+
+	:global(.apex-tooltip .body) {
+		padding: 4px;
+	}
+	:global(.apex-tooltip .target) {
+		color: rgb(255, 0, 0);
+	}
+</style>
