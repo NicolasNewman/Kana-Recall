@@ -3,6 +3,7 @@
 	import Syllabary from '../../components/form/Syllabary.svelte';
 	import { appWindow, LogicalSize } from '@tauri-apps/api/window';
 	import { routes } from '$lib/router';
+	import { goto } from '$app/navigation';
 	appWindow.setSize(new LogicalSize(900, 586));
 
 	let active: 'hira' | 'kata' = 'hira';
@@ -12,7 +13,7 @@
 
 	function onStartClicked() {
 		setItem('keyset', [...hiragana, ...katakana]);
-		window.location.href = routes.test('practice');
+		goto(routes.test('practice'));
 	}
 </script>
 

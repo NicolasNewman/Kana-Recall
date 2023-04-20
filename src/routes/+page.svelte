@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import { routes, type TestParam } from '$lib/router';
 	import { setItem } from '$lib/sessionStorage';
 	import { kanaCharacters, type Syllabary } from '$lib/syllabary';
@@ -7,7 +8,7 @@
 
 	function onTestClicked(mode: TestParam, kana: Syllabary) {
 		setItem('keyset', kanaCharacters[kana]);
-		window.location.href = routes.test(mode, kana);
+		goto(routes.test(mode, kana));
 	}
 </script>
 

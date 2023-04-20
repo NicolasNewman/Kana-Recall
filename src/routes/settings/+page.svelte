@@ -1,6 +1,7 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import { routes } from '$lib/router';
-	import { getItem, resetSession, setItem } from '$lib/sessionStorage';
+	import { getItem, setItem } from '$lib/sessionStorage';
 	import { LogicalSize, appWindow } from '@tauri-apps/api/window';
 
 	appWindow.setSize(new LogicalSize(350, 500));
@@ -12,9 +13,11 @@
 		const data: any = {};
 		for (let field of formData) {
 			const [key, value] = field;
-			data[key] = value;
+			const n = Number.parseInt(value as string);
+			data[key] = Number.isNaN(n) ? value : n;
 		}
 		setItem('settings', data);
+		goto(routes.home);
 	}
 </script>
 
@@ -38,7 +41,7 @@
 	</div>
 	<div>
 		<div class="form-control w-full max-w-xs">
-			<label class="label" for="recentStatCount">
+			<label class="label" for="maxRecallDuration">
 				<span class="label-text text-base">Maximum amount of time for recalling a kana</span>
 			</label>
 			<input
@@ -50,7 +53,7 @@
 			/>
 		</div>
 	</div>
-	<div>
+	<div class="mt-4">
 		<a href={routes.home} class="btn btn-secondary">Cancel</a>
 		<button type="submit" class="btn btn-primary">Save</button>
 	</div>
