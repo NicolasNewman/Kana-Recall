@@ -1,14 +1,4 @@
-<style>
-#h1 {
-    display: flex;
-}
-#h1 img {
-    width: 36px;
-    margin-right: 16px;
-}
-</style>
-
-# <div id="h1"><img src="image/logo.png" /> Kana-Recall<div>
+# Kana-Recall
 
 ![demo](image/demo1.png)
 
