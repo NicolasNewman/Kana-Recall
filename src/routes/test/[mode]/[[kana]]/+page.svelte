@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { appWindow, LogicalSize } from '@tauri-apps/api/window';
-	import { rand, sumArray } from '$lib/math';
+	import { accuracy, rand, sumArray } from '$lib/math';
 	import type { PageData } from './$types';
 	import { convert } from 'jp-conversion';
 	import { getItem, setItem } from '$lib/sessionStorage';
@@ -24,13 +24,39 @@
 
 	const sentence: string[] = [];
 	let correct: boolean[] = [];
-
+	console.log(mode);
 	let temp = [...charset];
-	for (let i = 0; i < 102; i++) {
-		if (temp.length === 0) {
-			temp = [...charset];
+	if (mode === 'test' || mode === 'practice') {
+		for (let i = 0; i < 102; i++) {
+			if (temp.length === 0) {
+				temp = [...charset];
+			}
+			const n = rand(temp.length);
+			sentence.push(temp[n]);
+			temp.splice(n, 1);
 		}
-		sentence.push(temp[rand(temp.length)]);
+	} else if ((mode === 'recall' || mode === 'accuracy') && kanaId) {
+		const weights = Object.entries(stats[kanaId]).map(([kana, stat]) => {
+			let avg = accuracy(stat, mode);
+			if (mode === 'accuracy') avg = 1 - avg;
+			console.log(`${kana}: ${avg}`);
+			return Math.tanh(0.25 * avg);
+		});
+		console.log(weights);
+		const weightSum = sumArray(weights);
+		console.log(`Weight Sum: ${weightSum}`);
+		for (let i = 0; i < 102; i++) {
+			const w = Math.random() * weightSum;
+			let acc = 0;
+			let j = 0;
+			for (j = 0; j < weights.length; j++) {
+				if (acc <= w && w <= acc + weights[j]) {
+					break;
+				}
+				acc += weights[j];
+			}
+			sentence.push(temp[j]);
+		}
 	}
 
 	function onKeyDown(e: KeyboardEvent) {
