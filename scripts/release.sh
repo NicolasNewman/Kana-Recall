@@ -1,9 +1,9 @@
 case $1 in 
   major|minor|patch) 
-         npm version $1
-         git checkout master
-         git pull
-         git merge master
+        npm version $1
+        git fetch origin master:master
+        git merge master
+        git push origin develop:master
   ;;
 
   *)
