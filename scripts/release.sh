@@ -1,10 +1,13 @@
+#!/bin/bash
+
 case $1 in 
   major|minor|patch) 
-        npm version $1
-        git push origin develop
-        git fetch origin master:master
-        git merge master
-        git push origin develop:master
+        if npm version $1 ; then
+          git push origin develop
+          git fetch origin master:master
+          git merge master
+          git push origin develop:master
+        fi
   ;;
 
   *)
