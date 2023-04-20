@@ -36,6 +36,18 @@
 			temp.splice(n, 1);
 		}
 	} else if ((mode === 'recall' || mode === 'accuracy') && kanaId) {
+		/*
+            The weights for time mode are calculated by taking the average time for a kana
+            and putting it through Sigmoid function. The calculates weights are stored in a
+            list along with another var for the sum. Once the weights and sums have been
+            computed, perform the following for each character needed in the sentence:
+            1) Generate a random continuous number (w) in the range [0, weightedSum]
+            2) Loop through the weights and keep track with an accumulator of the weights and an iterator
+            3) If the random number (w) is greater then the accumulator and less then the
+            accumulator + current weight from the list then return the iterator
+            4) Retrive the kana at the selected iterator from the flattened list
+            (the flattened list and weights list index's match up)
+        */
 		const weights = Object.entries(stats[kanaId]).map(([kana, stat]) => {
 			let avg = accuracy(stat, mode);
 			if (mode === 'accuracy') avg = 1 - avg;
