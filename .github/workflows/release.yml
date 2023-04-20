@@ -5,6 +5,14 @@ on:
       - master
 
 jobs:
+  changelog:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build Changelog
+        id: github_release
+        uses: mikepenz/release-changelog-builder-action@v3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   release:
     permissions:
       contents: write
@@ -51,8 +59,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tagName: ${{ github.ref_name }} # This only works if your workflow triggers on new tags.
-          releaseName: 'Kana-Recal v__VERSION__' # tauri-action replaces \_\_VERSION\_\_ with the app version.
-          releaseBody: 'See the assets to download and install this version.'
-          releaseDraft: true
+          tagName: __VERSION__ # This only works if your workflow triggers on new tags.
+          releaseName: 'Kana-Recall v__VERSION__' # tauri-action replaces \_\_VERSION\_\_ with the app version.
+          releaseBody: '${{steps.github_release.outputs.changelog}}'
+          # releaseDraft: true
           prerelease: true
