@@ -1,0 +1,22 @@
+.titlebar-icon {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 20px;
+}
+
+div.titlebar {
+	z-index: 10;
+	position: relative;
+}
+
+#btn-close {
+	&:hover {
+		background-color: #ff0000;
+
+		& > img {
+			/* #fff */
+			filter: invert(99%) sepia(46%) saturate(0%) hue-rotate(207deg) brightness(115%) contrast(100%);
+		}
+	}
+}

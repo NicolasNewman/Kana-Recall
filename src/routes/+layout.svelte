@@ -1,5 +1,5 @@
 <script>
-	import '../app.css';
+	import '../app.scss';
 	import Titlebar from 'custom-tauri-titlebar';
 	import { appWindow } from '@tauri-apps/api/window';
 	import { readFromDisk, resetSession, writeToDisk } from '$lib/sessionStorage';

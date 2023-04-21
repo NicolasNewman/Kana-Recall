@@ -1,0 +1,30 @@
+@font-face {
+	font-family: NotoSansMono;
+	src: url('/fonts/Noto\ Sans\ Mono\ CJK\ JP\ Regular.otf') format('opentype');
+}
+
+.NotoSansMono {
+	font-family: NotoSansMono;
+}
+
+@keyframes underlined {
+	0% {
+		text-decoration: none;
+	}
+
+	100% {
+		text-decoration: underline;
+	}
+}
+
+.underline {
+	animation: underlined 1.5s infinite;
+}
+
+.correct {
+	color: #00ff00;
+}
+
+.wrong {
+	color: #ff0000;
+}

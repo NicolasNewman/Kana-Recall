@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import 'styles/font.scss';
+@import 'styles/spinner.scss';
+@import 'styles/titlebar.scss';
+
+body {
+	overflow: hidden;
+	user-select: none;
+	cursor: default;
+}

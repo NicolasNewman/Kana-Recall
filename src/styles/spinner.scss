@@ -1,0 +1,29 @@
+@keyframes spinner {
+	0% {
+		transform: translate(-50%, -50%) rotate(0deg);
+	}
+	100% {
+		transform: translate(-50%, -50%) rotate(360deg);
+	}
+}
+
+.spinner {
+	position: relative;
+
+	&::before {
+		content: '';
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		width: min(25vh, 25vw);
+		height: min(25vh, 25vw);
+		border: 15px solid #00aaff;
+		border-radius: 50%;
+		z-index: 10;
+		clip-path: inset(0 50% 0 0);
+		mask-image: linear-gradient(to bottom right, black 25%, transparent 70%);
+
+		animation: spinner 1.4s infinite linear;
+	}
+}
