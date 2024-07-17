@@ -168,8 +168,10 @@
 		}
 	}
 
+	let testCompleted = false;
 	$: {
-		if (correct.length === sentence.length) {
+		testCompleted = correct.length === sentence.length;
+		if (testCompleted) {
 			const nCorrect = sumArray(correct);
 			text = `
 			<div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%">
@@ -198,10 +200,10 @@
 		id="content"
 		class="flex flex-col items-center justify-between rounded-lg border-2 p-1 pl-2 border-gray-800 h-full bg-gray-900 text-[36px] leading-10 text-white"
 	>
-		<div class="NotoSansMono h-full w-full">{@html text}</div>
-		<div class="mt-2 flex items-center">
-			{#if correct.length === sentence.length}
-				<a href={routes.home} class="btn btn-primary w-full mt-auto">Home</a>
+		<div class={`NotoSansMono w-full ${testCompleted ? 'h-full' : ''}`}>{@html text}</div>
+		<div class={`mt-2 flex items-center ${testCompleted ? '' : 'h-full'}`}>
+			{#if testCompleted}
+				<a href={routes.home} class="btn btn-primary w-full mt-auto mb-4">Home</a>
 			{:else}
 				<div class="p-1 w-16 h-10 text-2xl text-center bg-slate-800 border border-gray-300 rounded">
 					{keyState}
