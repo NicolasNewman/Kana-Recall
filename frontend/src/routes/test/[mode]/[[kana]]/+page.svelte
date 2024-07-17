@@ -7,7 +7,19 @@
 	import { kanaCharacters, type StoredStats } from '$lib/syllabary';
 	import { routes } from '$lib/router';
 	import Timer from '$lib/timer';
-	appWindow.setSize(new LogicalSize(700, 404));
+	import { getPlatform } from '$lib/platform';
+
+	const platform = getPlatform();
+
+	const bgStyle =
+		platform === 'web'
+			? 'aspect-[50/29] w-[700px] border border-gray rounded-md'
+			: platform === 'desktop'
+				? 'h-[calc(100vh-30px)]'
+				: '';
+	if (platform === 'desktop') {
+		appWindow.setSize(new LogicalSize(700, 404));
+	}
 
 	export let data: PageData;
 
@@ -160,7 +172,7 @@
 		if (correct.length === sentence.length) {
 			const nCorrect = sumArray(correct);
 			text = `
-			<div style="display: flex; flex-direction: column; align-items: center;">
+			<div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%">
 				<span style="border-bottom: 2px solid #fff; padding-bottom: 5px; width: 40%; text-align: center">Finished!</span>
 				<span>Correct: ${nCorrect}</span>
 				<span>Incorrect: ${sentence.length - nCorrect}</span>
@@ -181,13 +193,13 @@
 	}
 </script>
 
-<div id="container" class="p-8 bg-contain h-[calc(100vh-30px)]">
+<div id="container" class={`p-8 bg-cover ${bgStyle}`}>
 	<div
 		id="content"
 		class="flex flex-col items-center justify-between rounded-lg border-2 p-1 pl-2 border-gray-800 h-full bg-gray-900 text-[36px] leading-10 text-white"
 	>
-		<div class="NotoSansMono w-full">{@html text}</div>
-		<div class="mt-2 flex items-center h-full">
+		<div class="NotoSansMono h-full w-full">{@html text}</div>
+		<div class="mt-2 flex items-center">
 			{#if correct.length === sentence.length}
 				<a href={routes.home} class="btn btn-primary w-full mt-auto">Home</a>
 			{:else}

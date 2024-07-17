@@ -1,3 +1,4 @@
+import { getPlatform } from './platform';
 import { DefaultStoredStats, type StoredStats } from './syllabary';
 import { BaseDirectory, exists, writeTextFile, readTextFile, createDir } from '@tauri-apps/api/fs';
 
@@ -54,25 +55,35 @@ export function resetSession() {
 	}
 }
 
+/**
+ * Platform: desktop
+ */
 export async function readFromDisk() {
-	if (await exists('data.conf', { dir: BaseDirectory.AppData })) {
-		const data = JSON.parse(
-			await readTextFile('data.conf', { dir: BaseDirectory.AppData })
-		) as Partial<SessionStorage>;
-		Object.entries(data).forEach(([key, value]) => {
-			setItem(key as keyof SessionStorage, value);
-		});
+	if (getPlatform() === 'desktop') {
+		if (await exists('data.conf', { dir: BaseDirectory.AppData })) {
+			const data = JSON.parse(
+				await readTextFile('data.conf', { dir: BaseDirectory.AppData })
+			) as Partial<SessionStorage>;
+			Object.entries(data).forEach(([key, value]) => {
+				setItem(key as keyof SessionStorage, value);
+			});
+		}
 	}
 }
 
+/**
+ * Platform: desktop
+ */
 export async function writeToDisk() {
-	const temp = {
-		settings: getItem('settings'),
-		stats: getItem('stats')
-	} as Partial<SessionStorage>;
-	// BaseDir not found
-	if (!(await exists('', { dir: BaseDirectory.AppData }))) {
-		await createDir('', { dir: BaseDirectory.AppData, recursive: true });
+	if (getPlatform() === 'desktop') {
+		const temp = {
+			settings: getItem('settings'),
+			stats: getItem('stats')
+		} as Partial<SessionStorage>;
+		// BaseDir not found
+		if (!(await exists('', { dir: BaseDirectory.AppData }))) {
+			await createDir('', { dir: BaseDirectory.AppData, recursive: true });
+		}
+		await writeTextFile('data.conf', JSON.stringify(temp), { dir: BaseDirectory.AppData });
 	}
-	await writeTextFile('data.conf', JSON.stringify(temp), { dir: BaseDirectory.AppData });
 }

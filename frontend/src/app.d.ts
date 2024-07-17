@@ -5,10 +5,12 @@ declare global {
 		// interface Error {}
 		// interface Locals {}
 		// interface PageData {}
+		// interface PageState {}
 		// interface Platform {}
 	}
 	interface Window {
 		ApexCharts?: typeof ApexCharts;
+		__TAURI__?: unknown;
 	}
 }
 
