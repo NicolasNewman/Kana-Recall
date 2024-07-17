@@ -11,3 +11,12 @@ body {
 	user-select: none;
 	cursor: default;
 }
+
+.text-white-stroke {
+	color: red;
+	text-shadow:
+		-2px -2px 0 #fff,
+		2px -2px 0 #fff,
+		-2px 2px 0 #fff,
+		2px 2px 0 #fff;
+}

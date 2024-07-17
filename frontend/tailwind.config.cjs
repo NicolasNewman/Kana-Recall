@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
 /** @type {import('tailwindcss').Config} */
 module.exports = {
 	content: ['./src/**/*.{html,js,svelte,ts}'],
@@ -6,6 +7,16 @@ module.exports = {
 	},
 	plugins: [require('daisyui')],
 	daisyui: {
-		themes: ['light', 'dark']
-	}
+		themes: [
+			'light',
+			{
+				dark: {
+					...require('daisyui/src/theming/themes')['dark'],
+					primary: '#0042f6',
+					secondary: '#00b0f6'
+				}
+			}
+		]
+	},
+	darkMode: ['class', '[data-theme="dark"]']
 };

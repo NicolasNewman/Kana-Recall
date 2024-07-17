@@ -17,7 +17,7 @@
 		"@types/jp-conversion": "^0.0.2",
 		"apexcharts": "^3.37.3",
 		"custom-tauri-titlebar": "^0.2.7",
-		"daisyui": "^2.51.3",
+		"daisyui": "^4.12.10",
 		"jp-conversion": "^0.0.7"
 	},
 	"devDependencies": {

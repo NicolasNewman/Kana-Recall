@@ -63,8 +63,8 @@ importers:
         specifier: ^0.2.7
         version: 0.2.10(@tauri-apps/api@1.6.0)
       daisyui:
-        specifier: ^2.51.3
-        version: 2.52.0(autoprefixer@10.4.19(postcss@8.4.39))(postcss@8.4.39)
+        specifier: ^4.12.10
+        version: 4.12.10(postcss@8.4.39)
       jp-conversion:
         specifier: ^0.0.7
         version: 0.0.7
@@ -871,13 +871,6 @@ packages:
   color-name@1.1.4:
     resolution: {integrity: sha512-dOy+3AuW3a2wNbZHIuMZpTcgjGuLU/uBL/ubcZF9OXbDo8ff4O8yVp5Bf0efS8uEoYo5q4Fx7dY9OgQGXgAsQA==}
 
-  color-string@1.9.1:
-    resolution: {integrity: sha512-shrVawQFojnZv6xM40anx4CkoDP+fZsw/ZerEMsW/pyzsRbElpsL/DBVW7q3ExxwusdNXI3lXpuhEZkzs8p5Eg==}
-
-  color@4.2.3:
-    resolution: {integrity: sha512-1rXeuUUiGGrykh+CeBdu5Ie7OJwinCgQY0bc7GCRxy5xVHy+moaqkpL/jqQq0MtQOeYcrqEz4abc5f0KtU7W4A==}
-    engines: {node: '>=12.5.0'}
-
   colorette@2.0.20:
     resolution: {integrity: sha512-IfEDxwoWIjkeXL1eXcDiow4UbKjhLdq6/EuSVR9GMN7KVH3r9gQ83e73hsz1Nd1T3ijd5xv1wcWRYO+D6kCI2w==}
 
@@ -945,6 +938,10 @@ packages:
     engines: {node: '>=4'}
     hasBin: true
 
+  culori@3.3.0:
+    resolution: {integrity: sha512-pHJg+jbuFsCjz9iclQBqyL3B2HLCBF71BwVNujUYEvCeQMvV97R59MNK3R2+jgJ3a1fcZgI9B3vYgz8lzr/BFQ==}
+    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
+
   custom-tauri-titlebar-bootstrap@0.2.10:
     resolution: {integrity: sha512-QFSczV1mIMs9YW14+Bz/snyfUgaOde2pyARQy4dHTJAiQ5ZcR07HwFVYJrNNSUHtBjLiZXsCoqpwmKmRe7HdNQ==}
 
@@ -953,11 +950,9 @@ packages:
     peerDependencies:
       '@tauri-apps/api': ^1.0.0
 
-  daisyui@2.52.0:
-    resolution: {integrity: sha512-LQTA5/IVXAJHBMFoeaEMfd7/akAFPPcdQPR3O9fzzcFiczneJFM73CFPnScmW2sOgn/D83cvkP854ep2T9OfTg==}
-    peerDependencies:
-      autoprefixer: ^10.0.2
-      postcss: ^8.1.6
+  daisyui@4.12.10:
+    resolution: {integrity: sha512-jp1RAuzbHhGdXmn957Z2XsTZStXGHzFfF0FgIOZj3Wv9sH7OZgLfXTRZNfKVYxltGUOBsG1kbWAdF5SrqjebvA==}
+    engines: {node: '>=16.9.0'}
 
   dargs@8.1.0:
     resolution: {integrity: sha512-wAV9QHOsNbwnWdNW2FYvE1P56wtgSbM+3SZcdGiWQILwVjACCXDCI3Ai8QlCjMDB8YK5zySiXZYBiwGmNY3lnw==}
@@ -1340,9 +1335,6 @@ packages:
 
   is-arrayish@0.2.1:
     resolution: {integrity: sha512-zz06S8t0ozoDXMG+ube26zeCTNXcKIPJZJi8hBrF4idCLms4CG9QtK7qBl1boi5ODzFpjswb5JPmHCbMpjaYzg==}
-
-  is-arrayish@0.3.2:
-    resolution: {integrity: sha512-eVRqCvVlZbuw3GrM63ovNSNAeA1K16kaR/LRY/92w0zxQ5/1YzwblUX652i4Xs9RwAGjW9d9y6X88t8OaAJfWQ==}
 
   is-binary-path@2.1.0:
     resolution: {integrity: sha512-ZMERYes6pDydyuGidse7OsHxtbI7WVeUEozgR/g7rd0xUimYNlvZRE/K2MgZTjWy725IfelLeVcEM97mmtRGXw==}
@@ -1890,9 +1882,6 @@ packages:
   signal-exit@4.1.0:
     resolution: {integrity: sha512-bzyZ1e88w9O1iNJbKnOlvYTrWPDl46O1bG0D3XInv+9tkPrxrN8jUUTiFlDkkmKWgn1M6CfIA13SuGqOa9Korw==}
     engines: {node: '>=14'}
-
-  simple-swizzle@0.2.2:
-    resolution: {integrity: sha512-JA//kQgZtbuY83m+xT+tXJkmJncGMTFT+C+g2h2R9uxkYIrE2yy9sgmcLhCnw57/WSD+Eh3J97FPEDFnbXnDUg==}
 
   sirv@2.0.4:
     resolution: {integrity: sha512-94Bdh3cC2PKrbgSOUqTiGPWVZeSiXfKOVZNJniWoqrWrRkB1CJzBU3NEbiTsPcYy1lDsANA/THzS+9WBiy5nfQ==}
@@ -3036,16 +3025,6 @@ snapshots:
 
   color-name@1.1.4: {}
 
-  color-string@1.9.1:
-    dependencies:
-      color-name: 1.1.4
-      simple-swizzle: 0.2.2
-
-  color@4.2.3:
-    dependencies:
-      color-convert: 2.0.1
-      color-string: 1.9.1
-
   colorette@2.0.20: {}
 
   commander@12.1.0: {}
@@ -3110,6 +3089,8 @@ snapshots:
 
   cssesc@3.0.0: {}
 
+  culori@3.3.0: {}
+
   custom-tauri-titlebar-bootstrap@0.2.10: {}
 
   custom-tauri-titlebar@0.2.10(@tauri-apps/api@1.6.0):
@@ -3117,16 +3098,14 @@ snapshots:
       '@tauri-apps/api': 1.6.0
       custom-tauri-titlebar-bootstrap: 0.2.10
 
-  daisyui@2.52.0(autoprefixer@10.4.19(postcss@8.4.39))(postcss@8.4.39):
+  daisyui@4.12.10(postcss@8.4.39):
     dependencies:
-      autoprefixer: 10.4.19(postcss@8.4.39)
-      color: 4.2.3
       css-selector-tokenizer: 0.8.0
-      postcss: 8.4.39
+      culori: 3.3.0
+      picocolors: 1.0.1
       postcss-js: 4.0.1(postcss@8.4.39)
-      tailwindcss: 3.4.6
     transitivePeerDependencies:
-      - ts-node
+      - postcss
 
   dargs@8.1.0: {}
 
@@ -3568,8 +3547,6 @@ snapshots:
   ini@4.1.1: {}
 
   is-arrayish@0.2.1: {}
-
-  is-arrayish@0.3.2: {}
 
   is-binary-path@2.1.0:
     dependencies:
@@ -4042,10 +4019,6 @@ snapshots:
   signal-exit@3.0.7: {}
 
   signal-exit@4.1.0: {}
-
-  simple-swizzle@0.2.2:
-    dependencies:
-      is-arrayish: 0.3.2
 
   sirv@2.0.4:
     dependencies:

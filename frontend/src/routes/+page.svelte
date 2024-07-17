@@ -15,12 +15,15 @@
 <div class="aspect-[3/4] h-[390px]">
 	<div id="container">
 		<div class="flex flex-col items-center justify-center h-[390px] m-10">
-			<h1 class="text-3xl mb-2 text-purple-800">Kana-Recall</h1>
+			<h1 class="text-3xl mb-2 text-white-stroke">Kana-Recall</h1>
 			<div class="dropdown dropdown-end mb-2 w-1/2">
 				<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-				<span tabindex="0" class="btn btn-primary w-full">Practice</span>
+				<summary tabindex="0" class="btn btn-primary w-full">Practice</summary>
 				<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-				<ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-200 rounded-box w-52">
+				<ul
+					tabindex="0"
+					class="dropdown-content z-[1] menu p-2 shadow bg-base-200 rounded-box w-52"
+				>
 					<li><a href={routes.practice}>Custom</a></li>
 					<li><a href="#modalAccuracy">Low Accuracy</a></li>
 					<li><a href="#modalRecall">Slow Recall</a></li>
@@ -28,9 +31,12 @@
 			</div>
 			<div class="dropdown dropdown-end mb-2 w-1/2">
 				<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-				<span tabindex="0" class="btn btn-primary w-full">Test</span>
+				<summary tabindex="0" class="btn btn-primary w-full">Test</summary>
 				<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-				<ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-200 rounded-box w-52">
+				<ul
+					tabindex="0"
+					class="dropdown-content z-[1] menu p-2 shadow bg-base-200 rounded-box w-52"
+				>
 					<li><button on:click={(e) => onTestClicked('test', 'hira')}>Hiragana</button></li>
 					<li><button on:click={(e) => onTestClicked('test', 'kata')}>Katakana</button></li>
 				</ul>
