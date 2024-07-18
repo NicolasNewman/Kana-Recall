@@ -9,7 +9,6 @@ declare global {
 		// interface Platform {}
 	}
 	interface Window {
-		ApexCharts?: typeof ApexCharts;
 		__TAURI__?: unknown;
 	}
 }
