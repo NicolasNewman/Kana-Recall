@@ -1,10 +1,15 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { getPlatform } from '$lib/platform';
 	import { routes } from '$lib/router';
 	import { getItem, setItem } from '$lib/sessionStorage';
 	import { LogicalSize, appWindow } from '@tauri-apps/api/window';
 
-	appWindow.setSize(new LogicalSize(350, 500));
+	const platform = getPlatform();
+
+	if (platform === 'desktop') {
+		appWindow.setSize(new LogicalSize(350, 500));
+	}
 
 	const settings = getItem('settings');
 
@@ -19,12 +24,14 @@
 		setItem('settings', data);
 		goto(routes.home);
 	}
+
+	const bgStyle =
+		platform === 'desktop'
+			? 'titlebar-vh w-screen'
+			: 'aspect-[7/10] w-[350px] border border-gray rounded-md';
 </script>
 
-<form
-	class="flex flex-col p-6 w-screen titlebar-vh justify-between"
-	on:submit|preventDefault={save}
->
+<form class={`flex flex-col p-6 ${bgStyle} justify-between`} on:submit|preventDefault={save}>
 	<div>
 		<div class="form-control w-full max-w-xs">
 			<label class="label" for="recentStatCount">
