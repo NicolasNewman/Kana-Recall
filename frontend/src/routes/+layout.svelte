@@ -9,16 +9,16 @@
 
 	const platform = getPlatform();
 
+	const titlebar = new Titlebar({
+		theme: {
+			bgPrimary: '#3e3e3e',
+			bgSecondary: '#2e2e2e',
+			fontPrimary: '#ffffff',
+			fontSecondary: '#ffffff'
+		}
+	});
+	titlebar.addIcon({ type: 'html', data: '学' });
 	if (platform === 'desktop') {
-		const titlebar = new Titlebar({
-			theme: {
-				bgPrimary: '#3e3e3e',
-				bgSecondary: '#2e2e2e',
-				fontPrimary: '#ffffff',
-				fontSecondary: '#ffffff'
-			}
-		});
-		titlebar.addIcon({ type: 'html', data: '学' });
 		titlebar.addButton(
 			'btn-close',
 			{ type: 'src', data: 'https://api.iconify.design/mdi:close.svg' },
@@ -27,28 +27,28 @@
 				appWindow.close();
 			}
 		);
-		titlebar.addTitle('Kana-Recall');
-		titlebar.addMenu({
-			label: 'File',
-			items: [
-				{
-					type: 'item',
-					label: 'Settings',
-					action: () => {
-						goto(routes.settings);
-					}
-					// shortcut: { key: 's', ctrl: true } TODO doesn't work
-				},
-				{
-					type: 'item',
-					label: 'Reset',
-					action: () => {
-						window.location.href = '#modal';
-					}
-				}
-			]
-		});
 	}
+	titlebar.addTitle('Kana-Recall');
+	titlebar.addMenu({
+		label: 'File',
+		items: [
+			{
+				type: 'item',
+				label: 'Settings',
+				action: () => {
+					goto(routes.settings);
+				}
+				// shortcut: { key: 's', ctrl: true } TODO doesn't work
+			},
+			{
+				type: 'item',
+				label: 'Reset',
+				action: () => {
+					window.location.href = '#modal';
+				}
+			}
+		]
+	});
 
 	const promise = readFromDisk();
 
@@ -66,7 +66,7 @@
 			<slot />
 		</div>
 	{:else if platform === 'web'}
-		<div class="w-screen h-screen flex justify-center items-center">
+		<div class="w-screen h-[calc(100vh-30px)] flex justify-center items-center">
 			<slot />
 		</div>
 	{:else}

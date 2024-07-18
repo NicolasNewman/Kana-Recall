@@ -1,10 +1,14 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { getPlatform } from '$lib/platform';
 	import { routes, type TestParam } from '$lib/router';
 	import { setItem } from '$lib/sessionStorage';
 	import { kanaCharacters, type Syllabary } from '$lib/syllabary';
 	import { appWindow, LogicalSize } from '@tauri-apps/api/window';
-	appWindow.setSize(new LogicalSize(350, 500));
+
+	if (getPlatform() === 'desktop') {
+		appWindow.setSize(new LogicalSize(350, 500));
+	}
 
 	function onTestClicked(mode: TestParam, kana: Syllabary) {
 		setItem('keyset', kanaCharacters[kana]);
@@ -14,7 +18,8 @@
 
 <div class="aspect-[3/4] h-[390px]">
 	<div id="container">
-		<div class="flex flex-col items-center justify-center h-[390px] m-10">
+		<!-- m-10? -->
+		<div class="flex flex-col items-center justify-center h-[390px]">
 			<h1 class="text-3xl mb-2 text-white-stroke">Kana-Recall</h1>
 			<div class="dropdown dropdown-end mb-2 w-1/2">
 				<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
