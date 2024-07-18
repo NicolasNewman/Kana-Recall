@@ -6,7 +6,7 @@
 	import Radio from '../../components/form/Radio.svelte';
 	import { routes } from '$lib/router';
 	import Chart from '../../components/Chart.svelte';
-	import { getPlatform } from '$lib/platform';
+	import { getContainerHeight, getPlatform } from '$lib/platform';
 
 	const platform = getPlatform();
 
@@ -25,7 +25,6 @@
 		return selectedMode === 'recall' ? data.reverse() : data;
 	};
 
-	const colors = ['#00ff00', '#0000ff'];
 	type Mode = 'accuracy' | 'all' | 'recall';
 	const kana: Syllabary[] = ['hira', 'kata'];
 	const modes: Mode[] = ['accuracy', 'all', 'recall'];
@@ -46,17 +45,27 @@
 		selectedKana;
 		selectedMode;
 		data = parseData();
+
+		const tempMaxRecall = data
+			.map(([_, value]) => accuracy(value, 'recall'))
+			.sort((a, b) => b - a)[0];
+
 		max =
 			selectedMode === 'recall'
-				? data.map(([_, value]) => accuracy(value, 'recall')).sort((a, b) => b - a)[0]
+				? settings.maxRecallDuration < tempMaxRecall
+					? settings.maxRecallDuration
+					: tempMaxRecall
 				: 100;
 		unit = selectedMode === 'recall' ? 's' : '%';
 		multiplyer = selectedMode === 'recall' ? 1 : 100;
 	}
+
+	const bgStyle =
+		platform === 'web' ? 'h-[calc(100vh-30px)] mx-4' : platform === 'desktop' ? '' : '';
 </script>
 
-<div class="flex h-[calc(100vh-30px)] w-full overflow-hidden">
-	<div class="flex flex-col p-2 h-[calc(100vh-30px)]">
+<div class={`flex w-full overflow-hidden ${bgStyle} ${getContainerHeight()}`}>
+	<div class="flex flex-col p-2 ${getContainerHeight()}">
 		<span class="border-b border-gray-500">Syllabary</span>
 		{#each kana as syllabary}
 			<Radio
@@ -76,10 +85,6 @@
 	<div class="w-full">
 		<Chart
 			options={{
-				// color: colors,
-				// title: {
-				// 	text: 'Test chart'
-				// },
 				tooltip: {
 					trigger: 'axis',
 					axisPointer: {
@@ -129,10 +134,6 @@
 					axisTick: {
 						alignWithLabel: true
 					},
-					// axisLine: { show: false },
-					// axisLabel: { show: false },
-					// axisTick: { show: false },
-					// splitLine: { show: false },
 					data: data.map(([key, _]) => key)
 				},
 				series: [
