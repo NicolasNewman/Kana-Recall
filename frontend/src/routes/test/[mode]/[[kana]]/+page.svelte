@@ -34,20 +34,21 @@
 	let resetKeyState = false;
 	let text = '';
 
-	const sentence: string[] = [];
-	let correct: boolean[] = [];
-	let temp = [...charset];
-	if (mode === 'test' || mode === 'practice') {
-		for (let i = 0; i < 102; i++) {
-			if (temp.length === 0) {
-				temp = [...charset];
+	let sentence: string[] = [];
+	const sentencePromise = (async () => {
+		sentence = [];
+		let temp = [...charset];
+		if (mode === 'test' || mode === 'practice') {
+			for (let i = 0; i < 102; i++) {
+				if (temp.length === 0) {
+					temp = [...charset];
+				}
+				const n = rand(temp.length);
+				sentence.push(temp[n]);
+				temp.splice(n, 1);
 			}
-			const n = rand(temp.length);
-			sentence.push(temp[n]);
-			temp.splice(n, 1);
-		}
-	} else if ((mode === 'recall' || mode === 'accuracy') && kanaId) {
-		/*
+		} else if ((mode === 'recall' || mode === 'accuracy') && kanaId) {
+			/*
             The weights for time mode are calculated by taking the average time for a kana
             and putting it through Sigmoid function. The calculates weights are stored in a
             list along with another var for the sum. Once the weights and sums have been
@@ -59,26 +60,28 @@
             4) Retrive the kana at the selected iterator from the flattened list
             (the flattened list and weights list index's match up)
         */
-		const weights = Object.entries(stats[kanaId]).map(([kana, stat]) => {
-			let avg = accuracy(stat, mode);
-			if (mode === 'accuracy') avg = 1 - avg;
-			console.log(`${kana}: ${avg}`);
-			return Math.tanh(0.25 * avg);
-		});
-		const weightSum = sumArray(weights);
-		for (let i = 0; i < 102; i++) {
-			const w = Math.random() * weightSum;
-			let acc = 0;
-			let j = 0;
-			for (j = 0; j < weights.length; j++) {
-				if (acc <= w && w <= acc + weights[j]) {
-					break;
+			const weights = Object.entries(stats[kanaId]).map(([kana, stat]) => {
+				let avg = accuracy(stat, mode);
+				if (mode === 'accuracy') avg = 1 - avg;
+				console.log(`${kana}: ${avg}`);
+				return Math.tanh(0.25 * avg);
+			});
+			const weightSum = sumArray(weights);
+			for (let i = 0; i < 102; i++) {
+				const w = Math.random() * weightSum;
+				let acc = 0;
+				let j = 0;
+				for (j = 0; j < weights.length; j++) {
+					if (acc <= w && w <= acc + weights[j]) {
+						break;
+					}
+					acc += weights[j];
 				}
-				acc += weights[j];
+				sentence.push(temp[j]);
 			}
-			sentence.push(temp[j]);
 		}
-	}
+	})();
+	let correct: boolean[] = [];
 
 	function onKeyDown(e: KeyboardEvent) {
 		// prevent going past the length of the entire sentence
@@ -195,23 +198,36 @@
 	}
 </script>
 
-<div id="container" class={`p-8 bg-cover ${bgStyle}`}>
-	<div
-		id="content"
-		class="flex flex-col items-center justify-between rounded-lg border-2 p-1 pl-2 border-gray-800 h-full bg-gray-900 text-[36px] leading-10 text-white"
-	>
-		<div class={`NotoSansMono w-full ${testCompleted ? 'h-full' : ''}`}>{@html text}</div>
-		<div class={`mt-2 flex items-center ${testCompleted ? '' : 'h-full'}`}>
-			{#if testCompleted}
-				<a href={routes.home} class="btn btn-primary w-full mt-auto mb-4">Home</a>
-			{:else}
-				<div class="p-1 w-16 h-10 text-2xl text-center bg-slate-800 border border-gray-300 rounded">
-					{keyState}
-				</div>
-			{/if}
+{#await sentencePromise}
+	<div id="container" class={`p-8 bg-cover ${bgStyle}`}>
+		<div
+			id="content"
+			class="flex flex-col items-center justify-between rounded-lg border-2 p-1 pl-2 border-gray-800 h-full bg-gray-900 text-[36px] leading-10 text-white"
+		>
+			<div class="spinner" />
 		</div>
 	</div>
-</div>
+{:then _}
+	<div id="container" class={`p-8 bg-cover ${bgStyle}`}>
+		<div
+			id="content"
+			class="flex flex-col items-center justify-between rounded-lg border-2 p-1 pl-2 border-gray-800 h-full bg-gray-900 text-[36px] leading-10 text-white"
+		>
+			<div class={`NotoSansMono w-full ${testCompleted ? 'h-full' : ''}`}>{@html text}</div>
+			<div class={`mt-2 flex items-center ${testCompleted ? '' : 'h-full'}`}>
+				{#if testCompleted}
+					<a href={routes.home} class="btn btn-primary w-full mt-auto mb-4">Home</a>
+				{:else}
+					<div
+						class="p-1 w-16 h-10 text-2xl text-center bg-slate-800 border border-gray-300 rounded"
+					>
+						{keyState}
+					</div>
+				{/if}
+			</div>
+		</div>
+	</div>
+{/await}
 
 <svelte:window on:keydown|preventDefault={onKeyDown} />
 
