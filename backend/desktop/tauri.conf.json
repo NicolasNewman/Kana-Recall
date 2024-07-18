@@ -1,14 +1,13 @@
 {
-	"$schema": "../node_modules/@tauri-apps/cli/schema.json",
+	"$schema": "../../node_modules/@tauri-apps/cli/schema.json",
 	"build": {
-		"beforeBuildCommand": "pnpm build",
 		"beforeDevCommand": "pnpm dev",
 		"devPath": "http://localhost:5173",
-		"distDir": "../build"
+		"distDir": "../../frontend/build"
 	},
 	"package": {
 		"productName": "Kana-Recall",
-		"version": "../package.json"
+		"version": "../../package.json"
 	},
 	"tauri": {
 		"allowlist": {
