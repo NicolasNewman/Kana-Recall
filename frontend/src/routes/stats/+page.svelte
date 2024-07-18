@@ -1,13 +1,18 @@
 <script lang="ts">
 	import { getItem } from '$lib/sessionStorage';
 	import { LogicalSize, appWindow } from '@tauri-apps/api/window';
-	import { accuracy, sumArray } from '$lib/math';
-	import type { StoredStats, Syllabary } from '$lib/syllabary';
+	import { accuracy } from '$lib/math';
+	import type { Syllabary } from '$lib/syllabary';
 	import Radio from '../../components/form/Radio.svelte';
 	import { routes } from '$lib/router';
 	import Chart from '../../components/Chart.svelte';
+	import { getPlatform } from '$lib/platform';
 
-	appWindow.setSize(new LogicalSize(1000, 600));
+	const platform = getPlatform();
+
+	if (platform === 'desktop') {
+		appWindow.setSize(new LogicalSize(1000, 600));
+	}
 
 	const parseData = () => {
 		const data = Object.entries(stats[selectedKana])
@@ -20,26 +25,7 @@
 		return selectedMode === 'recall' ? data.reverse() : data;
 	};
 
-	const buildTooltip = (labels: string[], index: number) => {
-		const key = labels[index] as keyof StoredStats[typeof selectedKana];
-		const stat = stats[selectedKana][key];
-		const allTime = accuracy(stat, 'all');
-		return `<div class="apex-tooltip">
-			<div class="header">${labels[index]}</div>
-			<div class="body">
-				<p>All time: <strong class="${selectedMode === 'all' ? 'target' : ''}">${
-			accuracy(stat, 'all') * 100
-		}%</strong></p>	
-				<p>Accuracy (past ${settings.recentStatCount}): <strong class="${
-			selectedMode === 'accuracy' ? 'target' : ''
-		}">${accuracy(stat, 'accuracy') * 100}%</strong></p>	
-				<p>Recall (past ${settings.recentStatCount}): <strong class="${
-			selectedMode === 'recall' ? 'target' : ''
-		}">${accuracy(stat, 'recall').toFixed(2)}s</strong></p>					
-			</div>
-		</div>`;
-	};
-
+	const colors = ['#00ff00', '#0000ff'];
 	type Mode = 'accuracy' | 'all' | 'recall';
 	const kana: Syllabary[] = ['hira', 'kata'];
 	const modes: Mode[] = ['accuracy', 'all', 'recall'];
@@ -53,15 +39,23 @@
 		recall: 'Recall'
 	};
 	let data = parseData();
-
+	let max = 0;
+	let unit = '%';
+	let multiplyer = 100;
 	$: {
 		selectedKana;
 		selectedMode;
 		data = parseData();
+		max =
+			selectedMode === 'recall'
+				? data.map(([_, value]) => accuracy(value, 'recall')).sort((a, b) => b - a)[0]
+				: 100;
+		unit = selectedMode === 'recall' ? 's' : '%';
+		multiplyer = selectedMode === 'recall' ? 1 : 100;
 	}
 </script>
 
-<div class="flex h-[calc(100vh-30px)] overflow-hidden">
+<div class="flex h-[calc(100vh-30px)] w-full overflow-hidden">
 	<div class="flex flex-col p-2 h-[calc(100vh-30px)]">
 		<span class="border-b border-gray-500">Syllabary</span>
 		{#each kana as syllabary}
@@ -79,71 +73,109 @@
 		{/each}
 		<a href={routes.home} class="btn btn-primary w-full mt-auto">Home</a>
 	</div>
-	<Chart
-		options={{
-			chart: {
-				type: 'bar',
-				background: 'rgba(0,0,0,0)',
-				height: 1250
-			},
-			plotOptions: {
-				bar: {
-					horizontal: true,
-					dataLabels: {
-						position: '-200px'
+	<div class="w-full">
+		<Chart
+			options={{
+				// color: colors,
+				// title: {
+				// 	text: 'Test chart'
+				// },
+				tooltip: {
+					trigger: 'axis',
+					axisPointer: {
+						type: 'cross'
 					}
-				}
-			},
-			tooltip: {
-				custom: ({ w, series, dataPointIndex }) => buildTooltip(w.globals.labels, dataPointIndex)
-			},
-			dataLabels: {
-				style: {
-					colors: ['#f00']
 				},
-				// @ts-ignore
-				formatter: function (val, { dataPointIndex }) {
-					const dat = data[dataPointIndex][1];
-					if (selectedMode === 'accuracy') {
-						return `${val}% (${sumArray(dat.recent.accuracy)}/${dat.recent.accuracy.length})`;
-					} else if (selectedMode === 'recall') {
-						return `${val}s`;
-					}
-					return `${val}% (${dat.allTime.correct}/${dat.allTime.correct + dat.allTime.incorrect})`;
+				grid: {
+					top: 80,
+					bottom: 30
 				},
-				textAnchor: 'start'
-			},
-			series: [
-				{
-					name: selectedMode === 'recall' ? 'Recall' : 'Accuracy',
-					data: data.map(([key, value]) => ({
-						x: key,
-						y: (selectedMode === 'recall'
-							? accuracy(value, 'recall')
-							: accuracy(value, selectedMode) * 100
-						).toFixed(2)
-					})),
-					color: '#0f0'
-				}
-			],
-			xaxis: {
-				max: selectedMode === 'recall' ? undefined : 100
-			},
-			yaxis: {
-				labels: {
-					style: {
-						fontSize: '16'
+				dataZoom: [
+					{
+						type: 'inside',
+						yAxisIndex: [0],
+						orient: 'vertical',
+						start: 25,
+						end: 100
 					},
-					offsetX: -4,
-					align: 'center',
-					offsetY: 3
-				}
-			},
-			theme: {
-				mode: 'dark'
-			}
-		}}
-	/>
+					{
+						type: 'slider',
+						yAxisIndex: [0],
+						orient: 'vertical'
+					}
+				],
+				xAxis: [
+					{
+						type: 'value',
+						name: `${selectedMode}`,
+						position: 'bottom',
+						axisLine: {
+							show: true
+						},
+						axisLabel: {
+							formatter: `{value}${unit}`
+						},
+						splitLine: {
+							// lineStyle: {
+							// 	type: 'dashed'
+							// }
+						},
+						min: 0,
+						max
+					}
+				],
+				yAxis: {
+					type: 'category',
+					axisTick: {
+						alignWithLabel: true
+					},
+					// axisLine: { show: false },
+					// axisLabel: { show: false },
+					// axisTick: { show: false },
+					// splitLine: { show: false },
+					data: data.map(([key, _]) => key)
+				},
+				series: [
+					{
+						name: `${selectedMode} ${selectedMode !== 'recall' ? 'correct' : ''}`,
+						type: 'bar',
+						stack: 'Total',
+						label: {
+							// show: true,
+							// formatter: '{b}'
+						},
+						data: data.map(([key, value]) => {
+							return {
+								value: accuracy(value, selectedMode) * multiplyer,
+								label: {
+									position: 'right'
+								}
+							};
+						})
+					},
+					selectedMode === 'all' || selectedMode === 'accuracy'
+						? {
+								name: `${selectedMode} incorrect`,
+								type: 'bar',
+								stack: 'Total',
+								label: {
+									// show: true,
+									// formatter: '{b}'
+								},
+								data: data.map(([key, value]) => {
+									return {
+										value: 100 - accuracy(value, selectedMode) * multiplyer,
+										label: {
+											position: 'right'
+										}
+									};
+								})
+							}
+						: {}
+				]
+			}}
+		/>
+	</div>
 </div>
 
 <style>

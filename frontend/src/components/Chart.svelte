@@ -1,45 +1,16 @@
 <script lang="ts">
-	import type ApexCharts from 'apexcharts';
-	import type { ApexOptions } from 'apexcharts';
-	import { onMount } from 'svelte';
+	import { BarChart } from 'echarts/charts';
+	import { type EChartOption } from 'echarts';
+	import { GridComponent, TitleComponent } from 'echarts/components';
+	import { init, use } from 'echarts/core';
+	import { CanvasRenderer } from 'echarts/renderers';
+	import { Chart } from 'svelte-echarts';
 
-	export let options: ApexOptions;
+	export let options: EChartOption;
 
-	let ApexChart: typeof ApexCharts;
-	let loaded = false;
-	let rendering = true;
-
-	const chart = (node: HTMLElement, options: ApexOptions) => {
-		if (!loaded) return;
-		const chart = new ApexChart(node, options);
-		chart.render().then(() => {
-			rendering = false;
-		});
-		return {
-			update(options: ApexOptions) {
-				rendering = true;
-				setTimeout(() => {
-					chart.updateOptions(options).then(() => {
-						rendering = false;
-					});
-				}, 1000);
-			},
-			destroy() {
-				chart.destroy();
-			}
-		};
-	};
-
-	onMount(async () => {
-		const module = await import('apexcharts');
-		ApexChart = module.default;
-		window.ApexCharts = ApexChart;
-		loaded = true;
-	});
+	use([BarChart, GridComponent, CanvasRenderer, TitleComponent]);
 </script>
 
-{#if loaded}
-	<div class={`${rendering ? 'spinner' : ''} w-full overflow-x-auto`}>
-		<div style={rendering ? 'visibility: hidden;' : ''} use:chart={options} />
-	</div>
-{/if}
+<div class="h-full w-full">
+	<Chart {init} {options} />
+</div>

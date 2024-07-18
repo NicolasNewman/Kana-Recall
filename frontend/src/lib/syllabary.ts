@@ -1,106 +1,106 @@
-type Kana = {
+type Kana<T = string> = {
 	vowel: {
-		a: string;
-		i: string;
-		u: string;
-		e: string;
-		o: string;
+		a: T;
+		i: T;
+		u: T;
+		e: T;
+		o: T;
 	};
 	k: {
-		ka: string;
-		ki: string;
-		ku: string;
-		ke: string;
-		ko: string;
+		ka: T;
+		ki: T;
+		ku: T;
+		ke: T;
+		ko: T;
 	};
 	s: {
-		sa: string;
-		shi: string;
-		su: string;
-		se: string;
-		so: string;
+		sa: T;
+		shi: T;
+		su: T;
+		se: T;
+		so: T;
 	};
 	t: {
-		ta: string;
-		chi: string;
-		tsu: string;
-		te: string;
-		to: string;
+		ta: T;
+		chi: T;
+		tsu: T;
+		te: T;
+		to: T;
 	};
 	n: {
-		na: string;
-		ni: string;
-		nu: string;
-		ne: string;
-		no: string;
+		na: T;
+		ni: T;
+		nu: T;
+		ne: T;
+		no: T;
 	};
 	h: {
-		ha: string;
-		hi: string;
-		fu: string;
-		he: string;
-		ho: string;
+		ha: T;
+		hi: T;
+		fu: T;
+		he: T;
+		ho: T;
 	};
 	m: {
-		ma: string;
-		mi: string;
-		mu: string;
-		me: string;
-		mo: string;
+		ma: T;
+		mi: T;
+		mu: T;
+		me: T;
+		mo: T;
 	};
 	r: {
-		ra: string;
-		ri: string;
-		ru: string;
-		re: string;
-		ro: string;
+		ra: T;
+		ri: T;
+		ru: T;
+		re: T;
+		ro: T;
 	};
 	y: {
-		ya: string;
-		yu: string;
-		yo: string;
+		ya: T;
+		yu: T;
+		yo: T;
 	};
 	w: {
-		wa: string;
-		wo: string;
+		wa: T;
+		wo: T;
 	};
 	_n: {
-		n: string;
+		n: T;
 	};
 	g: {
-		ga: string;
-		gi: string;
-		gu: string;
-		ge: string;
-		go: string;
+		ga: T;
+		gi: T;
+		gu: T;
+		ge: T;
+		go: T;
 	};
 	z: {
-		za: string;
-		ji: string;
-		zu: string;
-		ze: string;
-		zo: string;
+		za: T;
+		ji: T;
+		zu: T;
+		ze: T;
+		zo: T;
 	};
 	d: {
-		da: string;
-		dzi: string;
-		dzu: string;
-		de: string;
-		do: string;
+		da: T;
+		dzi: T;
+		dzu: T;
+		de: T;
+		do: T;
 	};
 	b: {
-		ba: string;
-		bi: string;
-		bu: string;
-		be: string;
-		bo: string;
+		ba: T;
+		bi: T;
+		bu: T;
+		be: T;
+		bo: T;
 	};
 	p: {
-		pa: string;
-		pi: string;
-		pu: string;
-		pe: string;
-		po: string;
+		pa: T;
+		pi: T;
+		pu: T;
+		pe: T;
+		po: T;
 	};
 };
 type Syllabary = 'hira' | 'kata';
@@ -498,23 +498,190 @@ type StoredStats = {
 	};
 };
 
+type KanaGroupName =
+	| 'vowel'
+	| 'k_'
+	| 's_'
+	| 't_'
+	| 'n_'
+	| 'h_'
+	| 'm_'
+	| 'r_'
+	| 'y_'
+	| 'w_'
+	| 'g_'
+	| 'z_'
+	| 'd_'
+	| 'b_'
+	| 'p_';
+
+const kanaGroupMap: { [key: string]: KanaGroupName } = {
+	あ: 'vowel',
+	い: 'vowel',
+	う: 'vowel',
+	え: 'vowel',
+	お: 'vowel',
+	か: 'k_',
+	き: 'k_',
+	く: 'k_',
+	け: 'k_',
+	こ: 'k_',
+	さ: 's_',
+	し: 's_',
+	す: 's_',
+	せ: 's_',
+	そ: 's_',
+	た: 't_',
+	ち: 't_',
+	つ: 't_',
+	て: 't_',
+	と: 't_',
+	な: 'n_',
+	に: 'n_',
+	ぬ: 'n_',
+	ね: 'n_',
+	の: 'n_',
+	は: 'h_',
+	ひ: 'h_',
+	ふ: 'h_',
+	へ: 'h_',
+	ほ: 'h_',
+	ま: 'm_',
+	み: 'm_',
+	む: 'm_',
+	め: 'm_',
+	も: 'm_',
+	ら: 'r_',
+	り: 'r_',
+	る: 'r_',
+	れ: 'r_',
+	ろ: 'r_',
+	や: 'y_',
+	ゆ: 'y_',
+	よ: 'y_',
+	わ: 'w_',
+	を: 'w_',
+	ん: 'w_',
+	が: 'g_',
+	ぎ: 'g_',
+	ぐ: 'g_',
+	げ: 'g_',
+	ご: 'g_',
+	ざ: 'z_',
+	じ: 'z_',
+	ず: 'z_',
+	ぜ: 'z_',
+	ぞ: 'z_',
+	だ: 'd_',
+	ぢ: 'd_',
+	づ: 'd_',
+	で: 'd_',
+	ど: 'd_',
+	ば: 'b_',
+	び: 'b_',
+	ぶ: 'b_',
+	べ: 'b_',
+	ぼ: 'b_',
+	ぱ: 'p_',
+	ぴ: 'p_',
+	ぷ: 'p_',
+	ぺ: 'p_',
+	ぽ: 'p_',
+	ア: 'vowel',
+	イ: 'vowel',
+	ウ: 'vowel',
+	エ: 'vowel',
+	オ: 'vowel',
+	カ: 'k_',
+	キ: 'k_',
+	ク: 'k_',
+	ケ: 'k_',
+	コ: 'k_',
+	サ: 's_',
+	シ: 's_',
+	ス: 's_',
+	セ: 's_',
+	ソ: 's_',
+	タ: 'k_',
+	チ: 'k_',
+	ツ: 'k_',
+	テ: 'k_',
+	ト: 'k_',
+	ナ: 'n_',
+	ニ: 'n_',
+	ヌ: 'n_',
+	ネ: 'n_',
+	ノ: 'n_',
+	ハ: 'h_',
+	ヒ: 'h_',
+	フ: 'h_',
+	ヘ: 'h_',
+	ホ: 'h_',
+	マ: 'm_',
+	ミ: 'm_',
+	ム: 'm_',
+	メ: 'm_',
+	モ: 'm_',
+	ラ: 'r_',
+	リ: 'r_',
+	ル: 'r_',
+	レ: 'r_',
+	ロ: 'r_',
+	ヤ: 'y_',
+	ユ: 'y_',
+	ヨ: 'y_',
+	ワ: 'w_',
+	ヲ: 'w_',
+	ガ: 'g_',
+	ギ: 'g_',
+	グ: 'g_',
+	ゲ: 'g_',
+	ゴ: 'g_',
+	ザ: 'z_',
+	ジ: 'z_',
+	ズ: 'z_',
+	ゼ: 'z_',
+	ゾ: 'z_',
+	ダ: 'd_',
+	ヂ: 'd_',
+	ヅ: 'd_',
+	デ: 'd_',
+	ド: 'd_',
+	バ: 'b_',
+	ビ: 'b_',
+	ブ: 'b_',
+	ベ: 'b_',
+	ボ: 'b_',
+	パ: 'p_',
+	ピ: 'p_',
+	プ: 'p_',
+	ペ: 'p_',
+	ポ: 'p_'
+};
+
 const DefaultStoredStats: StoredStats = (() => {
 	const temp = {
 		hira: {},
 		kata: {}
 	};
-	temp['hira'] = hiragana.reduce((prev, curr) => {
-		prev[curr] = { allTime: { correct: 0, incorrect: 0 }, recent: { accuracy: [], recall: [] } };
-		return prev;
-	}, {} as { [key: string]: Statistic });
-	temp['kata'] = katakana.reduce((prev, curr) => {
-		prev[curr] = { allTime: { correct: 0, incorrect: 0 }, recent: { accuracy: [], recall: [] } };
-		return prev;
-	}, {} as { [key: string]: Statistic });
+	temp['hira'] = hiragana.reduce(
+		(prev, curr) => {
+			prev[curr] = { allTime: { correct: 0, incorrect: 0 }, recent: { accuracy: [], recall: [] } };
+			return prev;
+		},
+		{} as { [key: string]: Statistic }
+	);
+	temp['kata'] = katakana.reduce(
+		(prev, curr) => {
+			prev[curr] = { allTime: { correct: 0, incorrect: 0 }, recent: { accuracy: [], recall: [] } };
+			return prev;
+		},
+		{} as { [key: string]: Statistic }
+	);
 	return temp as StoredStats;
 })();
 
 export default kana;
-export { hiragana, katakana, kanaCharacters };
+export { hiragana, katakana, kanaCharacters, kanaGroupMap };
 export { type StoredStats, DefaultStoredStats };
-export type { Kana, Syllabary, Library };
+export type { Kana, Syllabary, Library, KanaGroupName };
