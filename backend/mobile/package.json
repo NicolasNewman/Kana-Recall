@@ -1,0 +1,17 @@
+{
+	"name": "mobile",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"sync": "cap sync"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"@capacitor/android": "^6.1.1",
+		"@capacitor/ios": "^6.1.1"
+	}
+}
