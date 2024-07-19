@@ -15,7 +15,7 @@
 		"dev:desktop": "concurrently --names=\"FRONTEND,DESKTOP\" \"pnpm dev\" \"pnpm tauri dev\"",
 		"build:frontend": "pnpm frontend build",
 		"build:desktop": "pnpm tauri build",
-		"build": "pnpm build:frontend && pnpm:build-tauri",
+		"build": "pnpm build:frontend && pnpm build:desktop",
 		"release:web": "pnpm web release",
 		"release": "pnpm build:frontend && pnpm release:web"
 	},
