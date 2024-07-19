@@ -1,83 +1,110 @@
-# name: Release
-# on:
-#   push:
-#     branches:
-#       - master
+name: Release
+on:
+  push:
+    branches:
+      - master
 
-# jobs:
-#   build-tauri:
-#     permissions:
-#       contents: write
-#     strategy:
-#       fail-fast: false
-#       matrix:
-#         platform: [macos-latest, ubuntu-20.04, windows-latest]
-#     runs-on: ${{ matrix.platform }}
-#     # outputs:
-#     #   RELEASE_ID: ${{steps.build-tauri.outputs.releaseId}}
-#     steps:
-#       - name: Checkout repository
-#         uses: actions/checkout@v3
+jobs:
+  build-web:
+    name: Web Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 7
+      - name: Sync node version and setup cache
+        uses: actions/setup-node@v3
+        with:
+          node-version: 'lts/*'
+          cache: 'pnpm'
+      - name: Install frontend dependencies
+        run: |
+          pnpm install 
+          pnpm build:frontend
+      - name: Deploy web
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./frontend/build
 
-#       - name: Install dependencies (ubuntu only)
-#         if: matrix.platform == 'ubuntu-20.04'
-#         # You can remove libayatana-appindicator3-dev if you don't use the system tray feature.
-#         run: |
-#           sudo apt-get update
-#           sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.0-dev libayatana-appindicator3-dev librsvg2-dev
+  build-desktop:
+    name: Desktop Build
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: [macos-latest, ubuntu-20.04, windows-latest]
+    runs-on: ${{ matrix.platform }}
+    # outputs:
+    #   RELEASE_ID: ${{steps.build-tauri.outputs.releaseId}}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-#       - name: Rust setup
-#         uses: dtolnay/rust-toolchain@stable
+      - name: Install dependencies (ubuntu only)
+        if: matrix.platform == 'ubuntu-20.04'
+        # You can remove libayatana-appindicator3-dev if you don't use the system tray feature.
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.0-dev libayatana-appindicator3-dev librsvg2-dev
 
-#       - name: Rust cache
-#         uses: swatinem/rust-cache@v2
-#         with:
-#           workspaces: './src-tauri -> target'
-#       - uses: pnpm/action-setup@v2
-#         with:
-#           version: 7
-#       - name: Sync node version and setup cache
-#         uses: actions/setup-node@v3
-#         with:
-#           node-version: 'lts/*'
-#           cache: 'pnpm' # Set this to npm, yarn or pnpm.
+      - name: Rust setup
+        uses: dtolnay/rust-toolchain@stable
 
-#       - name: Install frontend dependencies
-#         # If you don't have `beforeBuildCommand` configured you may want to build your frontend here too.
-#         run: pnpm install # Change this to npm, yarn or pnpm.
+      - name: Rust cache
+        uses: swatinem/rust-cache@v2
+        with:
+          workspaces: './backend/desktop -> target'
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 7
+      - name: Sync node version and setup cache
+        uses: actions/setup-node@v3
+        with:
+          node-version: 'lts/*'
+          cache: 'pnpm' # Set this to npm, yarn or pnpm.
 
-#       - name: Build the app
-#         id: build-tauri
-#         uses: tauri-apps/tauri-action@v0
-#         env:
-#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#         with:
-#           tagName: __VERSION__
-#           releaseName: 'Kana-Recall __VERSION__' # tauri-action replaces \_\_VERSION\_\_ with the app version.
-#           releaseBody: 'Download the version for your OS below'
-#           # releaseDraft: true
-#           prerelease: true
-#   # update-release:
-#   #   permissions:
-#   #     contents: write
-#   #     pull-requests: read
-#   #   runs-on: ubuntu-20.04
-#   #   needs: [build-tauri]
-#   #   steps:
-#   #     - name: Build Changelog
-#   #       id: github_release
-#   #       uses: mikepenz/release-changelog-builder-action@v3
-#   #       env:
-#   #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#   #     - name: update release
-#   #       id: update-release
-#   #       uses: actions/github-script@v6
-#   #       with:
-#   #         script: |
-#   #           github.rest.repos.updateRelease({
-#   #             repo: context.repo.repo,
-#   #             body: `${{steps.github_release.outputs.changelog}}`,
-#   #             release_id: `${{needs.build-tauri.outputs.RELEASE_ID}}`,
-#   #             draft: false,
-#   #             prerelease: true
-#   #           })
+      - name: Install frontend dependencies
+        # If you don't have `beforeBuildCommand` configured you may want to build your frontend here too.
+        run: |
+          pnpm install 
+          pnpm build:frontend
+
+      - name: Build the app
+        id: build-tauri
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tagName: __VERSION__
+          releaseName: 'Kana-Recall __VERSION__' # tauri-action replaces \_\_VERSION\_\_ with the app version.
+          releaseBody: 'Download the version for your OS below'
+          # releaseDraft: true
+          prerelease: true
+  # update-release:
+  #   permissions:
+  #     contents: write
+  #     pull-requests: read
+  #   runs-on: ubuntu-20.04
+  #   needs: [build-tauri]
+  #   steps:
+  #     - name: Build Changelog
+  #       id: github_release
+  #       uses: mikepenz/release-changelog-builder-action@v3
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #     - name: update release
+  #       id: update-release
+  #       uses: actions/github-script@v6
+  #       with:
+  #         script: |
+  #           github.rest.repos.updateRelease({
+  #             repo: context.repo.repo,
+  #             body: `${{steps.github_release.outputs.changelog}}`,
+  #             release_id: `${{needs.build-tauri.outputs.RELEASE_ID}}`,
+  #             draft: false,
+  #             prerelease: true
+  #           })

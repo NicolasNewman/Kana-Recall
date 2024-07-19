@@ -1,11 +1,14 @@
 {
 	"name": "web",
-	"version": "0.2.4",
+	"version": "0.3.0",
 	"description": "",
 	"main": "index.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"release": "gh-pages -d ../../frontend/build -b site"
+		"release": "gh-pages -d ../../frontend/build -b site",
+		"version:major": "pnpm version major --no-git-tag-version",
+		"version:minor": "pnpm version minor --no-git-tag-version",
+		"version:patch": "pnpm version patch --no-git-tag-version"
 	},
 	"keywords": [],
 	"author": "",
