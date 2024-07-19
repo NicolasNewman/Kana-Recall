@@ -7,7 +7,8 @@
 	import { appWindow, LogicalSize } from '@tauri-apps/api/window';
 
 	const platform = getPlatform();
-	const bgStyle = platform === 'web' ? 'border-gray border rounded-md' : '';
+	const bgStyle =
+		platform === 'web' ? 'aspect-[20/13] w-[900px] border-gray border rounded-md' : '';
 
 	if (platform === 'desktop') {
 		appWindow.setSize(new LogicalSize(900, 586));
@@ -24,7 +25,7 @@
 	}
 </script>
 
-<div class={`flex p-4 aspect-[20/13] w-[900px] ${bgStyle}`}>
+<div class={`flex p-4  ${bgStyle}`}>
 	<div class="flex flex-col justify-between">
 		<ul class="menu bg-base-100 min-w-[10rem]">
 			<li>

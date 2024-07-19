@@ -6,7 +6,8 @@
 	import { kanaCharacters, type Syllabary } from '$lib/syllabary';
 	import { appWindow, LogicalSize } from '@tauri-apps/api/window';
 
-	if (getPlatform() === 'desktop') {
+	const platform = getPlatform();
+	if (platform === 'desktop') {
 		appWindow.setSize(new LogicalSize(350, 500));
 	}
 
@@ -14,12 +15,15 @@
 		setItem('keyset', kanaCharacters[kana]);
 		goto(routes.test(mode, kana));
 	}
+
+	const bgStyle = platform === 'desktop' ? 'h-[calc(100vh-30px)]' : 'aspect-[3/4] h-[390px]';
+	const containerStyle = platform === 'desktop' ? 'h-[calc(100vh-30px)]' : 'h-[390px]';
 </script>
 
-<div class="aspect-[3/4] h-[390px]">
+<div class={`${bgStyle}`}>
 	<div id="container">
 		<!-- m-10? -->
-		<div class="flex flex-col items-center justify-center h-[390px]">
+		<div class={`flex flex-col items-center justify-center ${containerStyle}`}>
 			<h1 class="text-3xl mb-2 text-white-stroke">Kana-Recall</h1>
 			<div class="dropdown dropdown-end mb-2 w-1/2">
 				<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
