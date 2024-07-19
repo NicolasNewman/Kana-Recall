@@ -1,6 +1,6 @@
 {
 	"name": "kana-recall",
-	"version": "0.2.4",
+	"version": "0.3.0",
 	"description": "",
 	"main": "index.js",
 	"scripts": {
@@ -17,9 +17,9 @@
 		"build:frontend": "pnpm frontend build",
 		"build:desktop": "pnpm tauri build",
 		"build": "pnpm build:frontend && pnpm build:desktop",
-		"version:major": "pnpm -r version:major && pnpm version major",
-		"version:minor": "pnpm -r version:minor && pnpm version minor",
-		"version:patch": "pnpm -r version:patch && pnpm version patch"
+		"version:major": "pnpm -r version:major && pnpm version major --no-git-tag-version",
+		"version:minor": "pnpm -r version:minor && pnpm version minor --no-git-tag-version",
+		"version:patch": "pnpm -r version:patch && pnpm version patch --no-git-tag-version"
 	},
 	"keywords": [],
 	"author": "",
