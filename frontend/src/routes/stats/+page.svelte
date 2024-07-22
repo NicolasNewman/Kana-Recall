@@ -1,12 +1,15 @@
 <script lang="ts">
 	import { getItem } from '$lib/sessionStorage';
 	import { LogicalSize, appWindow } from '@tauri-apps/api/window';
-	import { accuracy } from '$lib/math';
-	import type { Syllabary } from '$lib/syllabary';
+	import { accuracy, count } from '$lib/math';
+	import type { Statistic, Syllabary } from '$lib/syllabary';
 	import Radio from '../../components/form/Radio.svelte';
 	import { routes } from '$lib/router';
 	import Chart from '../../components/Chart.svelte';
 	import { getContainerHeight, getPlatform } from '$lib/platform';
+	import type { EChartOption } from 'echarts';
+
+	type Formatter = EChartOption.Tooltip.Formatter;
 
 	const platform = getPlatform();
 
@@ -38,6 +41,9 @@
 		recall: 'Recall'
 	};
 	let data = parseData();
+	let dataFlat: Record<string, Statistic> = data
+		.map((arr) => ({ [arr[0]]: arr[1] }))
+		.reduce((prev, curr) => ({ ...prev, ...curr }), {});
 	let max = 0;
 	let unit = '%';
 	let multiplyer = 100;
@@ -45,6 +51,9 @@
 		selectedKana;
 		selectedMode;
 		data = parseData();
+		dataFlat = data
+			.map((arr) => ({ [arr[0]]: arr[1] }))
+			.reduce((prev, curr) => ({ ...prev, ...curr }), {});
 
 		const tempMaxRecall = data
 			.map(([_, value]) => accuracy(value, 'recall'))
@@ -62,6 +71,43 @@
 
 	const bgStyle =
 		platform === 'web' ? 'h-[calc(100vh-30px)] mx-4' : platform === 'desktop' ? '' : '';
+
+	const isList = <T,>(x: T | T[]): x is T[] => {
+		const temp = x as T[];
+		return temp?.length ? true : false;
+	};
+	const chartTooltipFormatter: Formatter = (params, ticket, callback) => {
+		console.log(dataFlat);
+		console.log(params);
+		const paramList = isList(params) ? params : [params];
+		console.log(dataFlat[paramList[0].axisValueLabel ?? '']);
+		const datapoint = paramList.map(
+			(row) => `
+			<div class="tooltip-row">
+				<div class="tooltip-circle">
+					<span class="circle" style="background-color: ${row.color}"></span>
+					<span class="tooltip-series">${row.seriesName}</span>
+				</div>
+				<div>
+					<strong>${row.value}${unit}</strong>
+					(n=${Math.round(
+						selectedMode === 'recall'
+							? count(dataFlat[row.axisValueLabel ?? ''], selectedMode)
+							: // @ts-ignore - value is string, incorrect type
+								(count(dataFlat[row.axisValueLabel ?? ''], selectedMode) * parseFloat(row.value)) /
+									100
+					)})
+				</div>
+			</div>
+		`
+		);
+		return `
+		<div>
+			<div>${paramList[0].axisValueLabel}</div>
+			${datapoint.join('')}
+		</div>
+		`;
+	};
 </script>
 
 <div class={`flex w-full overflow-hidden ${bgStyle} ${getContainerHeight()}`}>
@@ -76,7 +122,6 @@
 			/>
 		{/each}
 		<span class="border-b border-gray-500">Mode</span>
-
 		{#each modes as mode}
 			<Radio value={mode} label={modeName[mode]} bind:bind={selectedMode} name="selectedMode" />
 		{/each}
@@ -89,7 +134,8 @@
 					trigger: 'axis',
 					axisPointer: {
 						type: 'cross'
-					}
+					},
+					formatter: chartTooltipFormatter
 				},
 				grid: {
 					top: 80,
@@ -147,9 +193,10 @@
 						},
 						data: data.map(([key, value]) => {
 							return {
-								value: accuracy(value, selectedMode) * multiplyer,
+								value: (accuracy(value, selectedMode) * multiplyer).toFixed(1),
+
 								label: {
-									position: 'right'
+									// position: 'right',
 								}
 							};
 						})
@@ -165,7 +212,7 @@
 								},
 								data: data.map(([key, value]) => {
 									return {
-										value: 100 - accuracy(value, selectedMode) * multiplyer,
+										value: (100 - accuracy(value, selectedMode) * multiplyer).toFixed(1),
 										label: {
 											position: 'right'
 										}
@@ -180,24 +227,28 @@
 </div>
 
 <style>
-	/* :global(.apexcharts-data-labels) {
-		transform-box: fill-box;
-		transform-origin: center;
-		transform: rotate(-90deg);
-	} */
-	:global(.apex-tooltip) {
-	}
-	:global(.apex-tooltip .header) {
-		padding: 2px 4px;
-		width: 100%;
-		background: rgba(0, 0, 0, 0.6);
-		font-size: 16px;
+	:global(.circle) {
+		display: block;
+		width: 12px;
+		height: 12px;
+		border-radius: 50%;
 	}
 
-	:global(.apex-tooltip .body) {
-		padding: 4px;
+	:global(.tooltip-circle) {
+		display: flex;
+		align-items: center;
+		column-gap: 8px;
 	}
-	:global(.apex-tooltip .target) {
-		color: rgb(255, 0, 0);
+
+	:global(.tooltip-series) {
+		line-height: 12px;
+	}
+
+	:global(.tooltip-row) {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		align-content: center;
+		column-gap: 16px;
 	}
 </style>
