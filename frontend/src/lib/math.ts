@@ -19,6 +19,17 @@ export const accuracy = (stat: Statistic, mode: 'all' | 'accuracy' | 'recall' = 
 	return isNaN(acc) ? 0 : acc;
 };
 
+export const count = (stat: Statistic, mode: 'all' | 'accuracy' | 'recall') => {
+	if (mode === 'accuracy') {
+		return stat.recent.accuracy.length;
+	} else if (mode === 'recall') {
+		return stat.recent.recall.length;
+	} else if (mode === 'all') {
+		return stat.allTime.correct + stat.allTime.incorrect;
+	}
+	return 0;
+};
+
 export const sumArray = (arr: (number | boolean)[]) =>
 	arr.reduce((prev: number, curr) => {
 		if (typeof curr === 'boolean') return prev + (curr === true ? 1 : 0);
