@@ -49,6 +49,25 @@
 			}
 		]
 	});
+	titlebar.addMenu({
+		label: 'About',
+		items: [
+			{
+				type: 'item',
+				label: 'Source',
+				action: () => {
+					window.open('https://github.com/NicolasNewman/Kana-Recall');
+				}
+			},
+			{
+				type: 'item',
+				label: 'Releases',
+				action: () => {
+					window.open('https://github.com/NicolasNewman/Kana-Recall/releases');
+				}
+			}
+		]
+	});
 
 	const promise = readFromDisk();
 
