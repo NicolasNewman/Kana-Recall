@@ -77,10 +77,7 @@
 		return temp?.length ? true : false;
 	};
 	const chartTooltipFormatter: Formatter = (params, ticket, callback) => {
-		console.log(dataFlat);
-		console.log(params);
 		const paramList = isList(params) ? params : [params];
-		console.log(dataFlat[paramList[0].axisValueLabel ?? '']);
 		const datapoint = paramList.map(
 			(row) => `
 			<div class="tooltip-row">
